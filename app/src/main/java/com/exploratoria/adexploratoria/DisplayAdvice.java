@@ -1,12 +1,15 @@
 package com.exploratoria.adexploratoria;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.TextView;
 
-public class DisplayAdvice extends ActionBarActivity {
+public class DisplayAdvice extends SeenList {
 
     SharedPreferences preferences;
     TextView titulo;
@@ -14,8 +17,11 @@ public class DisplayAdvice extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.display_advise);
-        // Para tratar la toolbar como action bar:
+
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View contentView = inflater.inflate(R.layout.display_advise,null,false);
+        NavDrawerLayout.addView(contentView,0);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);

@@ -16,8 +16,10 @@
         android:text="@string/movies"
         android:id="@+id/buttonM"
         android:onClick="gotoMovies"
-        android:layout_above="@+id/buttonS"
-        android:layout_centerHorizontal="true" />
+        android:layout_marginBottom="200dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/buttonS"
+        android:layout_alignStart="@+id/buttonS" />
 
     <Button
         android:layout_width="wrap_content"
@@ -25,19 +27,9 @@
         android:text="@string/series"
         android:id="@+id/buttonS"
         android:onClick="gotoSeries"
-        android:layout_above="@+id/buttonV"
-        android:layout_alignRight="@+id/buttonV"
-        android:layout_alignEnd="@+id/buttonV" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/seen"
-        android:id="@+id/buttonV"
-        android:layout_alignParentBottom="true"
+        android:layout_alignTop="@+id/buttonM"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="80dp"
-        android:onClick="gotoSeen" />
+        android:layout_marginTop="68dp" />
 
     <ImageView
         android:layout_width="150dp"
@@ -46,5 +38,5 @@
         android:src="@drawable/ic_launcher"
         android:layout_above="@+id/buttonM"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="39dp" />
+        android:layout_marginBottom="53dp" />
 </RelativeLayout>

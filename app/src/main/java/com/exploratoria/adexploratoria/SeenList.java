@@ -1,6 +1,9 @@
 package com.exploratoria.adexploratoria;
 
+import android.app.Activity;
 import android.content.SharedPreferences;
+import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -12,53 +15,45 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class SeenList extends ActionBarActivity implements AdapterView.OnItemClickListener {
+import java.util.ArrayList;
 
-    SharedPreferences preferences;
+public class SeenList extends ActionBarActivity {
 
-    private DrawerLayout mDrawer;
-    private ListView mDrawerOptions;
-    private static final String[] values = {"Drawer", "Drawer", "Drawer", "Drawer", "Drawer", "Drawer", "Drawer", "Drawer", "Drawer", "Drawer", "Drawer", "Drawer", "Drawer", "Drawer", "Drawer", "Drawer", "Drawer", "Drawer", "Drawer", "Drawer", "Drawer", "Drawer", "Drawer", "Drawer", "Drawer", "Drawer", "Drawer"};
+    protected DrawerLayout NavDrawerLayout;
+    private ListView NavList;
+
+    private String[] titulos;
+    private ArrayList<ItemDrawer> NavItems;
+    NavigationAdapter NavAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.drawer);
 
-        // Para tratar la toolbar como action bar:
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
         }
 
-        mDrawerOptions = (ListView) findViewById(R.id.left_drawer);
-        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        NavDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        NavList = (ListView) findViewById(R.id.left_drawer);
 
-        mDrawerOptions.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, values));
-        mDrawerOptions.setOnItemClickListener(this);
+        View header = getLayoutInflater().inflate(R.layout.drawer_header,null);
+        NavList.addHeaderView(header);
+        titulos = getResources().getStringArray(R.array.test_drawer);
 
-        getApplicationContext();
-        preferences = getApplicationContext().getSharedPreferences("Context", MODE_PRIVATE);
-    }
+        NavItems = new ArrayList<ItemDrawer>();
+        int id_foto = R.drawable.ic_launcher;
 
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        Toast.makeText(this, "Pulsado " + values[i], Toast.LENGTH_SHORT).show();
-        mDrawer.closeDrawers();
-    }
+        NavItems.add(new ItemDrawer(titulos[0],2014,"Serie",id_foto));
+        NavItems.add(new ItemDrawer(titulos[1],2014,"Pelicula",id_foto));
+        NavItems.add(new ItemDrawer(titulos[2],2014,"Serie",id_foto));
+        NavItems.add(new ItemDrawer(titulos[3],2001,"Pelicula",id_foto));
+        NavItems.add(new ItemDrawer(titulos[4],2019,"Serie",id_foto));
+        NavItems.add(new ItemDrawer(titulos[5],2014,"Serie",id_foto));
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case android.R.id.home:
-                if (mDrawer.isDrawerOpen(mDrawerOptions)){
-                    mDrawer.closeDrawers();
-                }else{
-                    mDrawer.openDrawer(mDrawerOptions);
-                }
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+        NavAdapter = new NavigationAdapter(this,NavItems);
+        NavList.setAdapter(NavAdapter);
     }
 }
