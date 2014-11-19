@@ -1,14 +1,12 @@
-<resources xmlns:tools="http://schemas.android.com/tools" xmlns:android="http://schemas.android.com/apk/res/android">
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppTheme" parent="AppTheme.Base"/>
 
-    <style name="MyActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
-        <item name="android:background"  tools:ignore="NewApi">@color/material_deep_teal_500</item>
-        <item name="background">@color/material_deep_teal_500</item>
+    <style name="AppTheme.Base" parent="Theme.AppCompat">
+        <item name="colorPrimary">@color/teal_500</item>
+        <item name="colorPrimaryDark">@color/teal_700</item>
+        <item name="colorAccent">@color/teal_A100</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
     </style>
-
-    <style name="AppTheme" parent="@style/Theme.AppCompat.Light">
-        <item name="android:actionBarStyle"   tools:ignore="NewApi">@style/MyActionBar</item>
-        <item name="actionBarStyle">@style/MyActionBar</item>
-
-    </style>
-
 </resources>
