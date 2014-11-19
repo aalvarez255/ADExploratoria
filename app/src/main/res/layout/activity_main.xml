@@ -20,7 +20,8 @@
         android:text="@string/movies"
         android:id="@+id/buttonM"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:onClick="gotoMovies" />
 
     <Button
         android:layout_width="wrap_content"
@@ -29,7 +30,8 @@
         android:id="@+id/buttonS"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="170dp" />
+        android:layout_marginBottom="170dp"
+        android:onClick="gotoSeries" />
 
     <Button
         android:layout_width="wrap_content"
@@ -38,5 +40,6 @@
         android:id="@+id/buttonV"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="80dp" />
+        android:layout_marginBottom="80dp"
+        android:onClick="gotoSeen" />
 </RelativeLayout>
