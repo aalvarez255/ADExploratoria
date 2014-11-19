@@ -45,6 +45,9 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void gotoSeen(View v) {
+        SharedPreferences.Editor edit = preferences.edit();
+        edit.putString("goto","seen");
+        edit.commit();
         Intent intent = new Intent(this, SeenList.class);
         startActivity(intent);
     }
