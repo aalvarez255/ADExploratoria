@@ -16,10 +16,9 @@
         android:text="@string/movies"
         android:id="@+id/buttonM"
         android:onClick="gotoMovies"
-        android:layout_marginBottom="200dp"
+        android:layout_marginBottom="198dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignLeft="@+id/buttonS"
-        android:layout_alignStart="@+id/buttonS" />
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="wrap_content"
@@ -27,9 +26,9 @@
         android:text="@string/series"
         android:id="@+id/buttonS"
         android:onClick="gotoSeries"
-        android:layout_alignTop="@+id/buttonM"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="68dp" />
+        android:layout_marginTop="69dp"
+        android:layout_below="@+id/imageView2"
+        android:layout_centerHorizontal="true" />
 
     <ImageView
         android:layout_width="150dp"

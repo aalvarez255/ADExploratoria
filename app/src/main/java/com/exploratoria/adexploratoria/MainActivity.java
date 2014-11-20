@@ -3,8 +3,9 @@ package com.exploratoria.adexploratoria;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,9 +25,18 @@ public class MainActivity extends SeenList {
         NavDrawerLayout.addView(contentView, 0);
         // Para tratar la toolbar como action bar:
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (toolbar != null) {
-            setSupportActionBar(toolbar);
-        }
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_launcher);
+
+        DrawerLayout mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(
+                this,  mDrawerLayout, toolbar,
+                R.string.app_name, R.string.app_name
+        );
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        mDrawerToggle.syncState();
 
         getApplicationContext();
         preferences = getApplicationContext().getSharedPreferences("Context", MODE_PRIVATE);
@@ -45,14 +55,6 @@ public class MainActivity extends SeenList {
         edit.putString("goto","series");
         edit.commit();
         Intent intent = new Intent(this, DisplayAdvice.class);
-        startActivity(intent);
-    }
-
-    public void gotoSeen(View v) {
-        SharedPreferences.Editor edit = preferences.edit();
-        edit.putString("goto","seen");
-        edit.commit();
-        Intent intent = new Intent(this, SeenList.class);
         startActivity(intent);
     }
 
