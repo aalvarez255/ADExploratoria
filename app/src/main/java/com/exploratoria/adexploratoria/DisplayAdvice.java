@@ -12,6 +12,9 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,6 +32,10 @@ public class DisplayAdvice extends SeenList {
     TextView titulo;
 
     CardView cardView;
+
+    String context;
+
+    private Menu optionsMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +68,7 @@ public class DisplayAdvice extends SeenList {
         titulo = (TextView) findViewById(R.id.TextTitulo);
         getApplicationContext();
         preferences = getApplicationContext().getSharedPreferences("Context", MODE_PRIVATE);
-        String context = preferences.getString("goto","");
+        context = preferences.getString("goto","");
 
         if(context.equals("movies")) {
             titulo.setText("MOVIES");
@@ -78,5 +85,60 @@ public class DisplayAdvice extends SeenList {
         }
 
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        this.optionsMenu = menu;
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.refresh:
+
+                // CODE
+                if(context.equals("movies")) {
+                    titulo.setText("MOVIES");
+                    try {
+                        RESTRequest request = new RESTRequest(this,"movies");
+                        request.execute();
+                    }catch(Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                else if(context.equals("series")) {
+                    titulo.setText("SERIES");
+                    try {
+                        setRefreshActionButtonState(true);
+                        RESTRequest request = new RESTRequest(this,"series");
+                        request.execute();
+                        setRefreshActionButtonState(false);
+                    }catch(Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+
+    public void setRefreshActionButtonState(final boolean refreshing) {
+        if (optionsMenu != null) {
+            final MenuItem refreshItem = optionsMenu
+                    .findItem(R.id.refresh);
+            if (refreshItem != null) {
+                if (refreshing) {
+                    refreshItem.setActionView(R.layout.progress_refresh);
+                } else {
+                    refreshItem.setActionView(null);
+                }
+            }
+        }
     }
 }
