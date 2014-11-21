@@ -1,30 +1,18 @@
 package com.exploratoria.adexploratoria;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.w3c.dom.Text;
-
-import java.io.InputStream;
-import java.net.URL;
 
 public class DisplayAdvice extends SeenList {
 
@@ -99,7 +87,7 @@ public class DisplayAdvice extends SeenList {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.refresh:
-                // CODE
+                // CODE REFRESCAR
                 if(context.equals("movies")) {
                     titulo.setText("MOVIES");
                     try {
@@ -123,6 +111,29 @@ public class DisplayAdvice extends SeenList {
                 return true;
             case R.id.markseen:
                 // CODE MARCAR COMO VISTA
+
+                // CODE REFRESCAR
+                if(context.equals("movies")) {
+                    titulo.setText("MOVIES");
+                    try {
+                        RESTRequest request = new RESTRequest(this,"movies");
+                        request.execute();
+                    }catch(Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                else if(context.equals("series")) {
+                    titulo.setText("SERIES");
+                    try {
+                        setRefreshActionButtonState(true);
+                        RESTRequest request = new RESTRequest(this,"series");
+                        request.execute();
+                        setRefreshActionButtonState(false);
+                    }catch(Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
