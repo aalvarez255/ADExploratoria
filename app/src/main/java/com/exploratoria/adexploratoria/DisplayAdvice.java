@@ -99,7 +99,6 @@ public class DisplayAdvice extends SeenList {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.refresh:
-
                 // CODE
                 if(context.equals("movies")) {
                     titulo.setText("MOVIES");
@@ -122,6 +121,8 @@ public class DisplayAdvice extends SeenList {
                     }
                 }
                 return true;
+            case R.id.markseen:
+                // CODE MARCAR COMO VISTA
         }
         return super.onOptionsItemSelected(item);
     }

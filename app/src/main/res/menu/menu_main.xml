@@ -2,9 +2,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/refresh"
-        android:icon="@drawable/ic_popup_sync_6"
+        android:icon="@drawable/ic_menu_refresh"
         android:title="Refresh"
         android:alphabeticShortcut="r"
+        android:orderInCategory="2"
+        app:showAsAction="always" />
+
+    <item android:id="@+id/markseen"
+        android:icon="@drawable/ic_menu_seen"
+        android:title="Seen"
+        android:alphabeticShortcut="s"
         android:orderInCategory="1"
         app:showAsAction="always" />
 </menu>
