@@ -30,10 +30,6 @@ public class DisplayAdvice extends SeenList {
 
     CardView cardView;
 
-    TextView MovieTitulo;
-    ImageView MoviePortada;
-    TextView MovieAño;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,9 +39,7 @@ public class DisplayAdvice extends SeenList {
         NavDrawerLayout.addView(contentView,0);
 
         cardView = (CardView) findViewById(R.id.card_view);
-        MovieAño = (TextView) findViewById(R.id.MovieAño);
-        MoviePortada = (ImageView) findViewById(R.id.MoviePortada);
-        MovieTitulo = (TextView) findViewById(R.id.MovieTitulo);
+
         //cardView.setVisibility(View.INVISIBLE);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -73,23 +67,7 @@ public class DisplayAdvice extends SeenList {
             titulo.setText("MOVIES");
             try {
                 RESTRequest request = new RESTRequest(this,"movies");
-                JSONObject json = request.execute().get();
-
-                String idm = json.getString("idm");
-                String titulo = json.getString("name");
-                String año = json.getString("year");
-                JSONObject portada = json.getJSONObject("poster");
-                String url = portada.getString("large");
-
-                Bitmap image = new ImageRequest().execute(url).get();
-
-                MoviePortada.setImageBitmap(image);
-                MovieAño.setText(año);
-                MovieTitulo.setText(titulo);
-
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.putString("idm",idm);
-                editor.commit();
+                request.execute();
 
             }catch(Exception e) {
                 e.printStackTrace();

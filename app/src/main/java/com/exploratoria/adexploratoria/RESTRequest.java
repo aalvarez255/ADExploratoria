@@ -1,8 +1,20 @@
 package com.exploratoria.adexploratoria;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.support.v7.widget.CardView;
 import android.util.Log;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -14,16 +26,27 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import java.io.BufferedReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Random;
 
 /**
  * Created by adrian on 20/11/14.
  */
-public class RESTRequest extends AsyncTask<Void,Integer,JSONObject> {
+public class RESTRequest extends AsyncTask<Void,Integer,Void> {
 
     Activity context;
     String tipo;
+
+    Bitmap bitmap = null;
+    String titulo = "";
+    String año = "";
+    String idm = "";
+
+    boolean errorNet = false;
+    boolean errorServ = false;
 
     public RESTRequest (Activity context, String tipo) {
         this.context = context;
@@ -31,7 +54,7 @@ public class RESTRequest extends AsyncTask<Void,Integer,JSONObject> {
     }
 
     @Override
-    protected JSONObject doInBackground(Void... params) {
+    protected Void doInBackground(Void... params) {
         JSONObject res = null;
         try {
             HttpClient httpClient = new DefaultHttpClient();
@@ -64,20 +87,92 @@ public class RESTRequest extends AsyncTask<Void,Integer,JSONObject> {
             JSONArray movies = json.getJSONArray("medias");
             int peli = random.nextInt((47 - 0) + 1) + 0;  //[0,47]
             res = movies.getJSONObject(peli);
+
+            idm = res.getString("idm");
+            titulo = res.getString("name");
+            año = res.getString("year");
+            JSONObject portada = res.getJSONObject("poster");
+            String url = portada.getString("large");
+
+
+            URL imageUrl = new URL(url);
+            HttpURLConnection connection = (HttpURLConnection) imageUrl.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream inputStream = connection.getInputStream();
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inScaled = false;
+            bitmap = BitmapFactory.decodeStream(inputStream,null,options);
+
+
+
         }catch(Exception e) {
             e.printStackTrace();
+            errorServ = true;
         }
-        return res;
+        return null;
     }
 
     @Override
-    protected void onPostExecute(JSONObject jsonObject) {
+    protected void onPostExecute(Void jsonObject) {
         super.onPostExecute(jsonObject);
+        if (!errorNet && !errorServ) {
+            TextView MovieAño = (TextView) context.findViewById(R.id.MovieAño);
+            ImageView MoviePortada = (ImageView) context.findViewById(R.id.MoviePortada);
+            TextView MovieTitulo = (TextView) context.findViewById(R.id.MovieTitulo);
+            MoviePortada.setImageBitmap(bitmap);
+            MovieAño.setText(año);
+            MovieTitulo.setText(titulo);
+
+            SharedPreferences preferences =  context.getSharedPreferences("Context", context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString("idm",idm);
+            editor.commit();
+        }
+        else if (!errorNet && errorServ){
+            AlertDialog.Builder builder1 = new AlertDialog.Builder(context)
+                    .setCancelable(false)
+                    .setTitle("Error")
+                    .setMessage("Error interno del servidor. Vuelva a intentarlo más adelante.")
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                            cancel(true);
+                            context.finish();
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert);
+            AlertDialog alert = builder1.create();
+            alert.show();
+        }
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        if (activeNetworkInfo == null || !activeNetworkInfo.isConnected()) {
+            errorNet = true;
+            AlertDialog.Builder builder1 = new AlertDialog.Builder(context)
+                    .setTitle("Error")
+                    .setCancelable(false)
+                    .setMessage("No hay conexión a Internet.")
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                            cancel(true);
+                            context.finish();
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert);
+            AlertDialog alert = builder1.create();
+            alert.show();
+        }
     }
 
     @Override
