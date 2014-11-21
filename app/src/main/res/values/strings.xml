@@ -2,11 +2,9 @@
 <resources>
 
     <string name="app_name">Movie Adviser</string>
-    <string name="movies">PELICULAS</string>
-    <string name="series">SERIES</string>
+    <string name="movies">UNA PELICULA</string>
+    <string name="series">UNA SERIE</string>
     <string name="seen">VISTAS</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
 
     <string-array name="test_drawer">
         <item>Perfil</item>
