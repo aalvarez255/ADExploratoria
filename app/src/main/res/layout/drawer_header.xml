@@ -8,7 +8,8 @@
         android:layout_width="fill_parent"
         android:layout_height="75dp"
         android:id="@+id/backgrd"
-        android:background="@color/teal_500"
+        android:background="@color/teal_600"
         android:gravity="center"
-        android:textSize="25dp" />
+        android:textSize="25dp"
+        android:textColor="#ffffffff" />
 </FrameLayout>

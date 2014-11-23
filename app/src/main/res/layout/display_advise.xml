@@ -10,7 +10,6 @@
         android:id="@+id/TextTitulo"
         android:gravity="center_vertical|center_horizontal"
         android:textSize="35dp"
-        android:layout_below="@+id/toolbar"
         android:layout_centerHorizontal="true" />
 
 
