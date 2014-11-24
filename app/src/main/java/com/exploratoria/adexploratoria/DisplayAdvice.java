@@ -23,7 +23,7 @@ public class DisplayAdvice extends SeenList {
 
     String context;
 
-    private Menu optionsMenu;
+    Menu optionsMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +61,7 @@ public class DisplayAdvice extends SeenList {
         if(context.equals("movies")) {
             titulo.setText("MOVIES");
             try {
-                RESTRequest request = new RESTRequest(this,"movies");
+                RESTRequest request = new RESTRequest(this,"movies",optionsMenu);
                 request.execute();
 
             }catch(Exception e) {
@@ -91,7 +91,7 @@ public class DisplayAdvice extends SeenList {
                 if(context.equals("movies")) {
                     titulo.setText("MOVIES");
                     try {
-                        RESTRequest request = new RESTRequest(this,"movies");
+                        RESTRequest request = new RESTRequest(this,"movies",optionsMenu);
                         request.execute();
                     }catch(Exception e) {
                         e.printStackTrace();
@@ -100,10 +100,10 @@ public class DisplayAdvice extends SeenList {
                 else if(context.equals("series")) {
                     titulo.setText("SERIES");
                     try {
-                        setRefreshActionButtonState(true);
-                        RESTRequest request = new RESTRequest(this,"series");
+
+                        RESTRequest request = new RESTRequest(this,"series",optionsMenu);
                         request.execute();
-                        setRefreshActionButtonState(false);
+                       // setRefreshActionButtonState(false);
                     }catch(Exception e) {
                         e.printStackTrace();
                     }
@@ -111,28 +111,6 @@ public class DisplayAdvice extends SeenList {
                 return true;
             case R.id.markseen:
                 // CODE MARCAR COMO VISTA
-
-                // CODE REFRESCAR
-                if(context.equals("movies")) {
-                    titulo.setText("MOVIES");
-                    try {
-                        RESTRequest request = new RESTRequest(this,"movies");
-                        request.execute();
-                    }catch(Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                else if(context.equals("series")) {
-                    titulo.setText("SERIES");
-                    try {
-                        setRefreshActionButtonState(true);
-                        RESTRequest request = new RESTRequest(this,"series");
-                        request.execute();
-                        setRefreshActionButtonState(false);
-                    }catch(Exception e) {
-                        e.printStackTrace();
-                    }
-                }
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -140,17 +118,5 @@ public class DisplayAdvice extends SeenList {
 
 
 
-    public void setRefreshActionButtonState(final boolean refreshing) {
-        if (optionsMenu != null) {
-            final MenuItem refreshItem = optionsMenu
-                    .findItem(R.id.refresh);
-            if (refreshItem != null) {
-                if (refreshing) {
-                    refreshItem.setActionView(R.layout.progress_refresh);
-                } else {
-                    refreshItem.setActionView(null);
-                }
-            }
-        }
-    }
+
 }

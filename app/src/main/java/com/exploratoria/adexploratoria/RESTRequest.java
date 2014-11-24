@@ -13,6 +13,8 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.v7.widget.CardView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -39,6 +41,7 @@ public class RESTRequest extends AsyncTask<Void,Integer,Void> {
 
     Activity context;
     String tipo;
+    Menu optionsMenu;
 
     Bitmap bitmap = null;
     String titulo = "";
@@ -48,9 +51,10 @@ public class RESTRequest extends AsyncTask<Void,Integer,Void> {
     boolean errorNet = false;
     boolean errorServ = false;
 
-    public RESTRequest (Activity context, String tipo) {
+    public RESTRequest (Activity context, String tipo, Menu optionsMenu) {
         this.context = context;
         this.tipo = tipo;
+        this.optionsMenu = optionsMenu;
     }
 
     @Override
@@ -116,6 +120,7 @@ public class RESTRequest extends AsyncTask<Void,Integer,Void> {
     @Override
     protected void onPostExecute(Void jsonObject) {
         super.onPostExecute(jsonObject);
+        setRefreshActionButtonState(false);
         if (!errorNet && !errorServ) {
             TextView MovieAño = (TextView) context.findViewById(R.id.MovieAño);
             ImageView MoviePortada = (ImageView) context.findViewById(R.id.MoviePortada);
@@ -151,12 +156,15 @@ public class RESTRequest extends AsyncTask<Void,Integer,Void> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+        setRefreshActionButtonState(true);
 
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         if (activeNetworkInfo == null || !activeNetworkInfo.isConnected()) {
             errorNet = true;
+
+            setRefreshActionButtonState(false);
             AlertDialog.Builder builder1 = new AlertDialog.Builder(context)
                     .setTitle("Error")
                     .setCancelable(false)
@@ -178,5 +186,19 @@ public class RESTRequest extends AsyncTask<Void,Integer,Void> {
     @Override
     protected void onProgressUpdate(Integer... values) {
         super.onProgressUpdate(values);
+    }
+
+    public void setRefreshActionButtonState(final boolean refreshing) {
+        if (optionsMenu != null) {
+            final MenuItem refreshItem = optionsMenu
+                    .findItem(R.id.refresh);
+            if (refreshItem != null) {
+                if (refreshing) {
+                    refreshItem.setActionView(R.layout.progress_refresh);
+                } else {
+                    refreshItem.setActionView(null);
+                }
+            }
+        }
     }
 }
