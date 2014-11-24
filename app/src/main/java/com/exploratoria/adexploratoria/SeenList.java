@@ -3,6 +3,11 @@ package com.exploratoria.adexploratoria;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -15,6 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.sql.Blob;
 import java.util.ArrayList;
 
 public class SeenList extends ActionBarActivity {
@@ -22,9 +28,10 @@ public class SeenList extends ActionBarActivity {
     protected DrawerLayout NavDrawerLayout;
     private ListView NavList;
 
-    private String[] titulos;
     private ArrayList<ItemDrawer> NavItems;
     NavigationAdapter NavAdapter;
+
+    IntentsOpenHelpers sql;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,17 +48,26 @@ public class SeenList extends ActionBarActivity {
 
         View header = getLayoutInflater().inflate(R.layout.drawer_header,null);
         NavList.addHeaderView(header);
-        titulos = getResources().getStringArray(R.array.test_drawer);
 
         NavItems = new ArrayList<ItemDrawer>();
-        int id_foto = R.drawable.ic_launcher;
 
-        NavItems.add(new ItemDrawer(titulos[0],2014,"Serie",id_foto));
-        NavItems.add(new ItemDrawer(titulos[1],2014,"Pelicula",id_foto));
-        NavItems.add(new ItemDrawer(titulos[2],2014,"Serie",id_foto));
-        NavItems.add(new ItemDrawer(titulos[3],2001,"Pelicula",id_foto));
-        NavItems.add(new ItemDrawer(titulos[4],2019,"Serie",id_foto));
-        NavItems.add(new ItemDrawer(titulos[5],2014,"Serie",id_foto));
+        sql = new IntentsOpenHelpers(getApplicationContext());
+        SQLiteDatabase db = sql.getWritableDatabase();
+        String consult = "SELECT * FROM vistas";
+
+        Cursor cursor = db.rawQuery(consult,null);
+        while (cursor.moveToNext()) {
+            String titulo = cursor.getString(2);
+            String tipo = cursor.getString(3);
+            int año = cursor.getInt(4);
+            byte[] portadaByte = cursor.getBlob(5);
+
+            Bitmap bitmap = BitmapFactory.decodeByteArray(portadaByte , 0, portadaByte.length);
+
+            NavItems.add(new ItemDrawer(titulo,año,tipo,bitmap));
+        }
+        cursor.close();
+        sql.close();
 
         NavAdapter = new NavigationAdapter(this,NavItems);
         NavList.setAdapter(NavAdapter);

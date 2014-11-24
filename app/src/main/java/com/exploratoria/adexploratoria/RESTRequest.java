@@ -12,6 +12,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.v7.widget.CardView;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,6 +32,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -50,6 +52,7 @@ public class RESTRequest extends AsyncTask<Void,Integer,Void> {
     String titulo = "";
     String año = "";
     String idm = "";
+    String urlSmall = "";
 
     boolean errorNet = false;
     boolean errorServ = false;
@@ -90,9 +93,11 @@ public class RESTRequest extends AsyncTask<Void,Integer,Void> {
             Random random = new Random();
             int page = random.nextInt((2 - 0) + 1) + 0;  //[0,2]
             if (tipo == "movies") {
+                tipo = "Película";
                 request = new HttpGet("http://api.series.ly/v2/media/browse?auth_token=" + auth_token + "&mediaType=2&limit=48&page=" + Integer.toString(page));
             }
             else {
+                tipo = "Serie";
                 request = new HttpGet("http://api.series.ly/v2/media/browse?auth_token="+auth_token+"&mediaType=1&limit=48&page="+Integer.toString(page));
             }
             response = httpClient.execute(request);
@@ -114,7 +119,7 @@ public class RESTRequest extends AsyncTask<Void,Integer,Void> {
             año = res.getString("year");
             JSONObject portada = res.getJSONObject("poster");
             String url = portada.getString("large");
-
+            urlSmall = portada.getString("small");
 
             URL imageUrl = new URL(url);
             HttpURLConnection connection = (HttpURLConnection) imageUrl.openConnection();
@@ -150,6 +155,11 @@ public class RESTRequest extends AsyncTask<Void,Integer,Void> {
             SharedPreferences preferences =  context.getSharedPreferences("Context", context.MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
             editor.putString("idm",idm);
+            editor.putString("titulo",titulo);
+            editor.putString("tipo",tipo);
+            editor.putString("año",año);
+            editor.putString("portada",urlSmall);
+
             editor.commit();
         }
         else if (!errorNet && errorServ){

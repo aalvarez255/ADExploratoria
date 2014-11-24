@@ -6,14 +6,5 @@
     <string name="series">UNA SERIE</string>
     <string name="seen">VISTAS</string>
 
-    <string-array name="test_drawer">
-        <item>Perfil</item>
-        <item>Favoritos</item>
-        <item>Eventos</item>
-        <item>Lugares</item>
-        <item>Etiquetas</item>
-        <item>Configuración</item>
-        <item>Compartir</item>
-    </string-array>
 
 </resources>

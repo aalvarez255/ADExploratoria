@@ -1,5 +1,7 @@
 package com.exploratoria.adexploratoria;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by adrian on 19/11/14.
  */
@@ -7,9 +9,9 @@ public class ItemDrawer {
     private String titulo;
     private int year;
     private String tipo;
-    private int portada;
+    private Bitmap portada;
 
-    public ItemDrawer(String titulo, int year, String tipo, int portada) {
+    public ItemDrawer(String titulo, int year, String tipo, Bitmap portada) {
         this.titulo = titulo;
         this.year = year;
         this.tipo = tipo;
@@ -40,11 +42,11 @@ public class ItemDrawer {
         this.tipo = tipo;
     }
 
-    public int getPortada() {
+    public Bitmap getPortada() {
         return portada;
     }
 
-    public void setPortada(int portada) {
+    public void setPortada(Bitmap portada) {
         this.portada = portada;
     }
 }

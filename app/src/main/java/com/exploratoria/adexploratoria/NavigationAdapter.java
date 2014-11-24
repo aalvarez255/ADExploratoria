@@ -56,7 +56,7 @@ public class NavigationAdapter extends BaseAdapter {
             view.titulo = (TextView) convertView.findViewById(R.id.title_item);
             view.titulo.setText(item.getTitulo());
             view.portada = (ImageView) convertView.findViewById(R.id.portada);
-            view.portada.setImageResource(item.getPortada());
+            view.portada.setImageBitmap(item.getPortada());
             convertView.setTag(view);
         }
         else {
