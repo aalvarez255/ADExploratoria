@@ -50,6 +50,7 @@ public class RESTRequest extends AsyncTask<Void,Integer,Void> {
 
     Bitmap bitmap = null;
     String titulo = "";
+    String rating = "";
     String año = "";
     String idm = "";
     String urlSmall = "";
@@ -117,6 +118,10 @@ public class RESTRequest extends AsyncTask<Void,Integer,Void> {
             idm = res.getString("idm");
             titulo = res.getString("name");
             año = res.getString("year");
+            rating = res.getString("rating");
+            double rat = Double.parseDouble(rating);
+            rat = Math.round( rat * 100.0 ) / 100.0;
+            rating = String.valueOf(rat);
             JSONObject portada = res.getJSONObject("poster");
             String url = portada.getString("large");
             urlSmall = portada.getString("small");
@@ -148,9 +153,11 @@ public class RESTRequest extends AsyncTask<Void,Integer,Void> {
             TextView MovieAño = (TextView) context.findViewById(R.id.MovieAño);
             ImageView MoviePortada = (ImageView) context.findViewById(R.id.MoviePortada);
             TextView MovieTitulo = (TextView) context.findViewById(R.id.MovieTitulo);
+            TextView MovieRating = (TextView) context.findViewById(R.id.MovieRating);
             MoviePortada.setImageBitmap(bitmap);
             MovieAño.setText(año);
             MovieTitulo.setText(titulo);
+            MovieRating.setText(rating);
 
             SharedPreferences preferences =  context.getSharedPreferences("Context", context.MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
