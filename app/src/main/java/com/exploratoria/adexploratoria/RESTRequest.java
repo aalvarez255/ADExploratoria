@@ -77,7 +77,12 @@ public class RESTRequest extends AsyncTask<Void,Integer,Void> {
 
             Random random = new Random();
             int page = random.nextInt((2 - 0) + 1) + 0;  //[0,2]
-            request = new HttpGet("http://api.series.ly/v2/media/browse?auth_token="+auth_token+"&mediaType=2&limit=48&page="+Integer.toString(page));
+            if (tipo == "movies") {
+                request = new HttpGet("http://api.series.ly/v2/media/browse?auth_token=" + auth_token + "&mediaType=2&limit=48&page=" + Integer.toString(page));
+            }
+            else {
+                request = new HttpGet("http://api.series.ly/v2/media/browse?auth_token="+auth_token+"&mediaType=1&limit=48&page="+Integer.toString(page));
+            }
             response = httpClient.execute(request);
 
             reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
