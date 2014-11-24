@@ -23,6 +23,9 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -51,6 +54,8 @@ public class RESTRequest extends AsyncTask<Void,Integer,Void> {
     boolean errorNet = false;
     boolean errorServ = false;
 
+    ProgressDialog progressDialog;
+
     public RESTRequest (Activity context, String tipo, Menu optionsMenu) {
         this.context = context;
         this.tipo = tipo;
@@ -61,8 +66,15 @@ public class RESTRequest extends AsyncTask<Void,Integer,Void> {
     protected Void doInBackground(Void... params) {
         JSONObject res = null;
         try {
-            HttpClient httpClient = new DefaultHttpClient();
+
             HttpGet request = new HttpGet("http://api.series.ly/v2/auth_token?id_api=3074&secret=x6u6xTFr6h3CyVebSVcu");
+            HttpParams httpParameters = new BasicHttpParams();
+            int timeoutConnection = 3000;
+            HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
+            int timeoutSocket = 5000;
+            HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
+
+            DefaultHttpClient httpClient = new DefaultHttpClient(httpParameters);
             HttpResponse response = httpClient.execute(request);
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
@@ -121,6 +133,7 @@ public class RESTRequest extends AsyncTask<Void,Integer,Void> {
     protected void onPostExecute(Void jsonObject) {
         super.onPostExecute(jsonObject);
         setRefreshActionButtonState(false);
+        progressDialog.dismiss();
         if (!errorNet && !errorServ) {
             TextView MovieAño = (TextView) context.findViewById(R.id.MovieAño);
             ImageView MoviePortada = (ImageView) context.findViewById(R.id.MoviePortada);
@@ -158,12 +171,13 @@ public class RESTRequest extends AsyncTask<Void,Integer,Void> {
         super.onPreExecute();
         setRefreshActionButtonState(true);
 
+        progressDialog = ProgressDialog.show(context,"Cargando","Descargando información..",true,false);
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         if (activeNetworkInfo == null || !activeNetworkInfo.isConnected()) {
             errorNet = true;
-
+            progressDialog.dismiss();
             setRefreshActionButtonState(false);
             AlertDialog.Builder builder1 = new AlertDialog.Builder(context)
                     .setTitle("Error")
