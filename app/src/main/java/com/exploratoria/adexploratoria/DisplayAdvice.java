@@ -70,6 +70,13 @@ public class DisplayAdvice extends SeenList {
         }
         else if(context.equals("series")) {
             titulo.setText("SERIES");
+            try {
+                RESTRequest request = new RESTRequest(this,"series",optionsMenu);
+                request.execute();
+
+            }catch(Exception e) {
+                e.printStackTrace();
+            }
         }
 
 
