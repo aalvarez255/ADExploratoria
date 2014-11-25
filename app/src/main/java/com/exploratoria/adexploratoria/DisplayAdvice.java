@@ -1,7 +1,9 @@
 package com.exploratoria.adexploratoria;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -9,6 +11,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
@@ -41,10 +44,13 @@ public class DisplayAdvice extends SeenList {
 
     IntentsOpenHelpers sql;
 
+    Activity activity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        activity = this;
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View contentView = inflater.inflate(R.layout.display_advise,null,false);
         NavDrawerLayout.addView(contentView,0);
@@ -132,26 +138,37 @@ public class DisplayAdvice extends SeenList {
                 }
                 return true;
             case R.id.markseen:
-                new StoreMovieDB().execute();
+                try {
+                    Boolean bool = new StoreMovieDB().execute().get();
+                    if(bool) updateDrawer();
+                }catch (Exception e) {
+                    e.printStackTrace();
+                }
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
 
-    private class StoreMovieDB extends AsyncTask<Void,Void,Void> {
+    private class StoreMovieDB extends AsyncTask<Void,Void,Boolean> {
 
         String tipo;
 
         @Override
-        protected void onPostExecute(Void aVoid) {
+        protected void onPostExecute(Boolean aVoid) {
             super.onPostExecute(aVoid);
-            Toast.makeText(getApplicationContext(),tipo+" añadida a la lista de vistas.",
-                    Toast.LENGTH_LONG).show();
+            if (aVoid) {
+                Toast.makeText(getApplicationContext(),tipo+" añadida a la lista de vistas.",
+                        Toast.LENGTH_LONG).show();
+            }
+            else {
+                Toast.makeText(getApplicationContext(),"Error: "+tipo+" no añadida a la lista de vistas.",
+                        Toast.LENGTH_LONG).show();
+            }
         }
 
         @Override
-        protected Void doInBackground(Void... params) {
+        protected Boolean doInBackground(Void... params) {
             try {
                 String titulo = preferences.getString("titulo","");
                 tipo = preferences.getString("tipo","");
@@ -174,14 +191,22 @@ public class DisplayAdvice extends SeenList {
 
                 sql = new IntentsOpenHelpers(getApplicationContext());
                 SQLiteDatabase db = sql.getWritableDatabase();
-                final String query ="INSERT INTO vistas (idm,titulo,tipo,año,portada) VALUES ('"+idm+"','"+titulo+"','"+tipo+"',"+año+","+java.util.Arrays.toString(bArray)+")";
-                db.execSQL(query);
+
+                ContentValues cv = new ContentValues();
+                cv.put("idm", idm);
+                cv.put("titulo", titulo);
+                cv.put("tipo", tipo);
+                cv.put("año", año);
+                cv.put("portada", bArray);
+                db.insertWithOnConflict("vistas", null, cv, SQLiteDatabase.CONFLICT_REPLACE);
+
                 db.close();
 
             }catch(Exception e) {
                 e.printStackTrace();
+                return false;
             }
-            return null;
+            return true;
         }
     }
 }

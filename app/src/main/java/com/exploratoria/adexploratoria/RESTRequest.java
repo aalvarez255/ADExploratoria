@@ -6,6 +6,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
@@ -37,6 +39,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -58,6 +61,8 @@ public class RESTRequest extends AsyncTask<Void,Integer,Void> {
     boolean errorServ = false;
 
     ProgressDialog progressDialog;
+
+    IntentsOpenHelpers sql;
 
     public RESTRequest (Activity context, String tipo, Menu optionsMenu) {
         this.context = context;
@@ -91,7 +96,9 @@ public class RESTRequest extends AsyncTask<Void,Integer,Void> {
             String auth_token  = json.getString("auth_token");
 
             Random random = new Random();
-            int page = random.nextInt((2 - 0) + 1) + 0;  //[0,2]
+            int num_pag = 2;
+            int num_pag_min = 0;
+            int page = random.nextInt((num_pag - num_pag_min) + 1) + num_pag_min;  //[0,2]
             if (tipo == "movies") {
                 tipo = "Película";
                 request = new HttpGet("http://api.series.ly/v2/media/browse?auth_token=" + auth_token + "&mediaType=2&limit=48&page=" + Integer.toString(page));
@@ -114,7 +121,50 @@ public class RESTRequest extends AsyncTask<Void,Integer,Void> {
             int peli = random.nextInt((47 - 0) + 1) + 0;  //[0,47]
             res = movies.getJSONObject(peli);
 
+            ArrayList<String> idm_vistas = new ArrayList<String>();
+            sql = new IntentsOpenHelpers(context);
+            SQLiteDatabase db = sql.getWritableDatabase();
+            String consult = "SELECT idm FROM vistas";
+            Cursor cursor = db.rawQuery(consult,null);
+            while (cursor.moveToNext()) {
+                idm_vistas.add(cursor.getString(0));
+            }
+            cursor.close();
+            db.close();
+
+            if (idm_vistas.size() == (num_pag*48)) {
+                num_pag_min += (num_pag - num_pag_min) + 1;
+                num_pag += (num_pag - num_pag_min) + 1;
+            }
+
             idm = res.getString("idm");
+
+            while (idm_vistas.contains(idm)) {
+                random = new Random();
+                page = random.nextInt((num_pag - num_pag_min) + 1) + num_pag_min;  //[0,2]
+                if (tipo == "movies") {
+                    tipo = "Película";
+                    request = new HttpGet("http://api.series.ly/v2/media/browse?auth_token=" + auth_token + "&mediaType=2&limit=48&page=" + Integer.toString(page));
+                }
+                else {
+                    tipo = "Serie";
+                    request = new HttpGet("http://api.series.ly/v2/media/browse?auth_token="+auth_token+"&mediaType=1&limit=48&page="+Integer.toString(page));
+                }
+                response = httpClient.execute(request);
+
+                reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
+                builder = new StringBuilder();
+                for(String line = null; (line = reader.readLine()) != null;) {
+                    builder.append(line).append("\n");
+                }
+                tokener = new JSONTokener(builder.toString());
+                json = new JSONObject(tokener);
+                json = json.getJSONObject("results");
+                movies = json.getJSONArray("medias");
+                peli = random.nextInt((47 - 0) + 1) + 0;  //[0,47]
+                res = movies.getJSONObject(peli);
+                idm = res.getString("idm");
+            }
             titulo = res.getString("name");
             año = res.getString("year");
             JSONObject portada = res.getJSONObject("poster");

@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -29,7 +30,7 @@ public class SeenList extends ActionBarActivity {
     private ListView NavList;
 
     private ArrayList<ItemDrawer> NavItems;
-    NavigationAdapter NavAdapter;
+    public NavigationAdapter NavAdapter;
 
     IntentsOpenHelpers sql;
 
@@ -69,6 +70,31 @@ public class SeenList extends ActionBarActivity {
         cursor.close();
         sql.close();
 
+        NavAdapter = new NavigationAdapter(this,NavItems);
+        NavList.setAdapter(NavAdapter);
+    }
+
+    public void updateDrawer() {
+        Log.v("VIST", "entra");
+        NavItems = new ArrayList<ItemDrawer>();
+
+        sql = new IntentsOpenHelpers(getApplicationContext());
+        SQLiteDatabase db = sql.getWritableDatabase();
+        String consult = "SELECT * FROM vistas";
+
+        Cursor cursor = db.rawQuery(consult,null);
+        while (cursor.moveToNext()) {
+            String titulo = cursor.getString(2);
+            String tipo = cursor.getString(3);
+            int año = cursor.getInt(4);
+            byte[] portadaByte = cursor.getBlob(5);
+
+            Bitmap bitmap = BitmapFactory.decodeByteArray(portadaByte , 0, portadaByte.length);
+
+            NavItems.add(new ItemDrawer(titulo,año,tipo,bitmap));
+        }
+        cursor.close();
+        sql.close();
         NavAdapter = new NavigationAdapter(this,NavItems);
         NavList.setAdapter(NavAdapter);
     }
