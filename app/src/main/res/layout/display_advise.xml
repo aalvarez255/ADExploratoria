@@ -80,7 +80,7 @@
                 android:layout_marginBottom="10dp" />
 
             <TextView
-                android:layout_width="195dp"
+                android:layout_width="190dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/MovieRating"
                 android:layout_toEndOf="@+id/MovieAño"
