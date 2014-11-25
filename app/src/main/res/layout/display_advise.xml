@@ -23,6 +23,7 @@
         android:gravity="center_vertical|center_horizontal"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/TextTitulo"
+        android:layout_marginBottom="135dp"
         android:layout_above="@+id/card_view">
 
     </android.support.v7.widget.CardView>
@@ -35,13 +36,13 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/card_view"
         android:layout_width="300dp"
-        android:layout_height="95dp"
+        android:layout_height="wrap_content"
         android:elevation="8dp"
         card_view:cardCornerRadius="4dp"
         android:gravity="center_vertical|center_horizontal"
-        android:layout_marginBottom="39dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="360dp"
+        android:layout_below="@+id/TextTitulo">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -59,10 +60,10 @@
                 android:textColor="#000"
                 android:padding="5dp"
                 android:textStyle="bold"
-                android:layout_above="@+id/MovieAño"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
                 android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp" />
 
             <TextView
@@ -73,10 +74,9 @@
                 android:textSize="18dp"
                 android:textColor="#000"
                 android:padding="5dp"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginLeft="10dp"
+                android:layout_below="@+id/MovieTitulo"
+                android:layout_alignLeft="@+id/MovieTitulo"
+                android:layout_alignStart="@+id/MovieTitulo"
                 android:layout_marginBottom="10dp" />
 
             <TextView
