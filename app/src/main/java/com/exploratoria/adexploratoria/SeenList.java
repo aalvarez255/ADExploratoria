@@ -47,8 +47,8 @@ public class SeenList extends ActionBarActivity {
         NavDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         NavList = (ListView) findViewById(R.id.left_drawer);
 
-        View header = getLayoutInflater().inflate(R.layout.drawer_header,null);
-        NavList.addHeaderView(header);
+        //View header = getLayoutInflater().inflate(R.layout.drawer_header,null);
+        //NavList.addHeaderView(header);
 
         NavItems = new ArrayList<ItemDrawer>();
 

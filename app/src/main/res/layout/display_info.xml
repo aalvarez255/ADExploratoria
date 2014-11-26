@@ -35,7 +35,6 @@
         android:layout_alignTop="@+id/portadaInfo"
         android:layout_toRightOf="@+id/portadaInfo"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="5dp"
         android:layout_marginRight="15dp"
         android:layout_marginBottom="5dp"
         android:textSize="18sp" />
@@ -75,7 +74,8 @@
         android:layout_below="@+id/generoInfo"
         android:layout_alignLeft="@+id/generoInfo"
         android:layout_alignStart="@+id/generoInfo"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:layout_marginRight="5dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -87,4 +87,14 @@
         android:layout_alignStart="@+id/portadaInfo"
         android:layout_marginTop="20dp"
         android:textSize="16sp" />
+
+    <ImageView
+        android:layout_width="18dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView3"
+        android:layout_alignBottom="@+id/ratingInfo"
+        android:layout_toRightOf="@+id/ratingInfo"
+        android:layout_toEndOf="@+id/ratingInfo"
+        android:src="@drawable/white_star"
+        android:layout_alignTop="@+id/ratingInfo" />
 </RelativeLayout>

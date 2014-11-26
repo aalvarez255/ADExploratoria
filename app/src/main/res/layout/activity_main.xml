@@ -4,36 +4,54 @@
     android:layout_width="match_parent" android:layout_height="match_parent">
 
     <ImageView
-        android:layout_width="350dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/imageView2"
-        android:layout_centerHorizontal="true"
         android:src="@drawable/main"
-        android:layout_marginBottom="150dp" />
+        android:layout_marginLeft="23dp"
+        android:layout_marginTop="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="23dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="50dp"
+        android:layout_above="@+id/textView" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/movies"
-        android:id="@+id/buttonM"
+        android:id="@+id/button"
         android:onClick="gotoMovies"
         android:background="@drawable/custom_button"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="175dp" />
+        android:layout_marginBottom="15dp"
+        android:layout_above="@+id/button2"
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/series"
-        android:id="@+id/buttonS"
+        android:id="@+id/button2"
         android:onClick="gotoSeries"
         android:background="@drawable/custom_button"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="110dp"
-        android:layout_alignRight="@+id/buttonM"
-        android:layout_alignEnd="@+id/buttonM"
-        android:layout_alignLeft="@+id/buttonM"
-        android:layout_alignStart="@+id/buttonM" />
+        android:layout_alignLeft="@+id/button"
+        android:layout_alignStart="@+id/button"
+        android:layout_marginBottom="40dp"
+        android:layout_alignRight="@+id/button"
+        android:layout_alignEnd="@+id/button" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="¿Qué quieres ver hoy?"
+        android:id="@+id/textView"
+        android:layout_above="@+id/button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dp" />
 
 </RelativeLayout>
