@@ -13,17 +13,12 @@ import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
-import android.support.v7.widget.CardView;
-import android.util.Base64;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
@@ -34,7 +29,6 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -42,9 +36,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Random;
 
-/**
- * Created by adrian on 20/11/14.
- */
 public class RESTRequest extends AsyncTask<Void,Integer,Void> {
 
     Activity context;
@@ -76,7 +67,8 @@ public class RESTRequest extends AsyncTask<Void,Integer,Void> {
 
     @Override
     protected Void doInBackground(Void... params) {
-        JSONObject res = null;
+        JSONObject res;
+        JSONObject res2;
         try {
 
             HttpGet request = new HttpGet("http://api.series.ly/v2/auth_token?id_api=3074&secret=x6u6xTFr6h3CyVebSVcu");
@@ -91,7 +83,7 @@ public class RESTRequest extends AsyncTask<Void,Integer,Void> {
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
             StringBuilder builder = new StringBuilder();
-            for(String line = null; (line = reader.readLine()) != null;) {
+            for(String line; (line = reader.readLine()) != null;) {
                 builder.append(line).append("\n");
             }
             JSONTokener tokener = new JSONTokener(builder.toString());
@@ -103,7 +95,7 @@ public class RESTRequest extends AsyncTask<Void,Integer,Void> {
             int num_pag = 2;
             int num_pag_min = 0;
             int page = random.nextInt((num_pag - num_pag_min) + 1) + num_pag_min;  //[0,2]
-            if (tipo == "movies") {
+            if (tipo.equals("movies")) {
                 tipo = "Película";
                 request = new HttpGet("http://api.series.ly/v2/media/browse?auth_token=" + auth_token + "&mediaType=2&limit=48&page=" + Integer.toString(page));
             }
@@ -115,7 +107,7 @@ public class RESTRequest extends AsyncTask<Void,Integer,Void> {
 
             reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
             builder = new StringBuilder();
-            for(String line = null; (line = reader.readLine()) != null;) {
+            for(String line; (line = reader.readLine()) != null;) {
                 builder.append(line).append("\n");
             }
             tokener = new JSONTokener(builder.toString());
@@ -143,10 +135,28 @@ public class RESTRequest extends AsyncTask<Void,Integer,Void> {
 
             idm = res.getString("idm");
 
+            /* INICIO PEDIR FULL_INFO */
+            if (tipo.equals("Película")) {
+                request = new HttpGet("http://api.series.ly/v2/media/full_info?auth_token="+auth_token+"&idm="+idm+"&mediaType=2");
+            }
+            else {
+                request = new HttpGet("http://api.series.ly/v2/media/full_info?auth_token="+auth_token+"&idm="+idm+"&mediaType=1");
+            }
+            response = httpClient.execute(request);
+
+            reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
+            builder = new StringBuilder();
+            for(String line; (line = reader.readLine()) != null;) {
+                builder.append(line).append("\n");
+            }
+            tokener = new JSONTokener(builder.toString());
+            res2 = new JSONObject(tokener);
+            /* FIN PEDIR FULL_INFO */
+
             while (idm_vistas.contains(idm)) {
                 random = new Random();
                 page = random.nextInt((num_pag - num_pag_min) + 1) + num_pag_min;  //[0,2]
-                if (tipo == "movies") {
+                if (tipo.equals("movies")) {
                     tipo = "Película";
                     request = new HttpGet("http://api.series.ly/v2/media/browse?auth_token=" + auth_token + "&mediaType=2&limit=48&page=" + Integer.toString(page));
                 }
@@ -158,7 +168,7 @@ public class RESTRequest extends AsyncTask<Void,Integer,Void> {
 
                 reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
                 builder = new StringBuilder();
-                for(String line = null; (line = reader.readLine()) != null;) {
+                for(String line; (line = reader.readLine()) != null;) {
                     builder.append(line).append("\n");
                 }
                 tokener = new JSONTokener(builder.toString());
@@ -168,12 +178,30 @@ public class RESTRequest extends AsyncTask<Void,Integer,Void> {
                 peli = random.nextInt((47 - 0) + 1) + 0;  //[0,47]
                 res = movies.getJSONObject(peli);
                 idm = res.getString("idm");
+                /* INICIO PEDIR FULL_INFO */
+                if (tipo.equals("Película")) {
+                    request = new HttpGet("http://api.series.ly/v2/media/full_info?auth_token="+auth_token+"&idm="+idm+"&mediaType=2");
+                }
+                else {
+                    request = new HttpGet("http://api.series.ly/v2/media/full_info?auth_token="+auth_token+"&idm="+idm+"&mediaType=1");
+                }
+                response = httpClient.execute(request);
+
+                reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
+                builder = new StringBuilder();
+                for(String line; (line = reader.readLine()) != null;) {
+                    builder.append(line).append("\n");
+                }
+                tokener = new JSONTokener(builder.toString());
+                res2 = new JSONObject(tokener);
+                /* FIN PEDIR FULL_INFO */
             }
-            titulo = res.getString("name");
-            año = res.getString("year");
-            rating = res.getString("rating");
-            plot = res.getString("plot");
-            genero = res.getString("maingenre");
+
+            titulo = res2.optString("name");
+            año = res2.optString("year");
+            rating = res2.optString("rating");
+            plot = res2.optString("plot");
+            genero = res2.optString("maingenre");
 
             double rat = Double.parseDouble(rating);
             rat = Math.round( rat * 100.0 ) / 100.0;
@@ -225,6 +253,7 @@ public class RESTRequest extends AsyncTask<Void,Integer,Void> {
             editor.putString("portadaBig",urlBig);
             editor.putString("rating",rating);
             editor.putString("plot",plot);
+            editor.putString("genero",genero);
 
 
             editor.commit();

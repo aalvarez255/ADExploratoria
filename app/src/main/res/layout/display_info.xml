@@ -19,8 +19,8 @@
         android:textSize="24sp" />
 
     <ImageView
-        android:layout_width="175dp"
-        android:layout_height="260dp"
+        android:layout_width="150dp"
+        android:layout_height="223dp"
         android:id="@+id/portadaInfo"
         android:layout_below="@+id/tituloInfo"
         android:layout_alignLeft="@+id/tituloInfo"
@@ -37,7 +37,8 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="5dp"
         android:layout_marginRight="15dp"
-        android:layout_marginBottom="5dp" />
+        android:layout_marginBottom="5dp"
+        android:textSize="18sp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -49,7 +50,8 @@
         android:layout_marginRight="15dp"
         android:layout_marginBottom="5dp"
         android:layout_toRightOf="@+id/portadaInfo"
-        android:layout_marginLeft="20dp" />
+        android:layout_marginLeft="20dp"
+        android:textSize="18sp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -61,7 +63,8 @@
         android:layout_alignLeft="@+id/añoInfo"
         android:layout_alignStart="@+id/añoInfo"
         android:layout_marginBottom="5dp"
-        android:layout_marginRight="15dp" />
+        android:layout_marginRight="15dp"
+        android:textSize="18sp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -71,7 +74,8 @@
         android:layout_toEndOf="@+id/portadaInfo"
         android:layout_below="@+id/generoInfo"
         android:layout_alignLeft="@+id/generoInfo"
-        android:layout_alignStart="@+id/generoInfo" />
+        android:layout_alignStart="@+id/generoInfo"
+        android:textSize="18sp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -80,5 +84,7 @@
         android:id="@+id/plotInfo"
         android:layout_below="@+id/portadaInfo"
         android:layout_alignLeft="@+id/portadaInfo"
-        android:layout_alignStart="@+id/portadaInfo" />
+        android:layout_alignStart="@+id/portadaInfo"
+        android:layout_marginTop="20dp"
+        android:textSize="16sp" />
 </RelativeLayout>
