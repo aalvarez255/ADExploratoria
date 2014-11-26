@@ -12,7 +12,7 @@
         android:layout_marginBottom="150dp" />
 
     <Button
-        android:layout_width="150dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/movies"
         android:id="@+id/buttonM"
@@ -23,14 +23,17 @@
         android:layout_marginBottom="175dp" />
 
     <Button
-        android:layout_width="150dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/series"
         android:id="@+id/buttonS"
         android:onClick="gotoSeries"
         android:background="@drawable/custom_button"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="110dp" />
+        android:layout_marginBottom="110dp"
+        android:layout_alignRight="@+id/buttonM"
+        android:layout_alignEnd="@+id/buttonM"
+        android:layout_alignLeft="@+id/buttonM"
+        android:layout_alignStart="@+id/buttonM" />
 
 </RelativeLayout>
