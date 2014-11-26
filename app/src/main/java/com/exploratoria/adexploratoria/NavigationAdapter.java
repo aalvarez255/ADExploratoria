@@ -44,6 +44,8 @@ public class NavigationAdapter extends BaseAdapter {
     public static class Fila {
         TextView titulo;
         ImageView portada;
+        TextView año;
+        TextView tipo;
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -57,6 +59,10 @@ public class NavigationAdapter extends BaseAdapter {
             view.titulo.setText(item.getTitulo());
             view.portada = (ImageView) convertView.findViewById(R.id.portada);
             view.portada.setImageBitmap(item.getPortada());
+            view.año = (TextView) convertView.findViewById(R.id.year_item);
+            view.año.setText(String.valueOf(item.getYear()));
+            view.tipo = (TextView) convertView.findViewById(R.id.type_item);
+            view.tipo.setText(item.getTipo());
             convertView.setTag(view);
         }
         else {

@@ -174,7 +174,7 @@ public class RESTRequest extends AsyncTask<Void,Integer,Void> {
             rating = String.valueOf(rat);
             JSONObject portada = res.getJSONObject("poster");
             String url = portada.getString("large");
-            urlSmall = portada.getString("small");
+            urlSmall = portada.getString("medium");
 
             URL imageUrl = new URL(url);
             HttpURLConnection connection = (HttpURLConnection) imageUrl.openConnection();
