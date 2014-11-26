@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Título"
+        android:id="@+id/tituloInfo"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:gravity="center_horizontal"
+        android:layout_margin="15dp"
+        android:textSize="24sp" />
+
+    <ImageView
+        android:layout_width="175dp"
+        android:layout_height="260dp"
+        android:id="@+id/portadaInfo"
+        android:layout_below="@+id/tituloInfo"
+        android:layout_alignLeft="@+id/tituloInfo"
+        android:layout_alignStart="@+id/tituloInfo" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tipo"
+        android:id="@+id/tipoInfo"
+        android:layout_toEndOf="@+id/portadaInfo"
+        android:layout_alignTop="@+id/portadaInfo"
+        android:layout_toRightOf="@+id/portadaInfo"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Año"
+        android:id="@+id/añoInfo"
+        android:layout_toEndOf="@+id/portadaInfo"
+        android:layout_below="@+id/tipoInfo"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="5dp"
+        android:layout_toRightOf="@+id/portadaInfo"
+        android:layout_marginLeft="20dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Género"
+        android:id="@+id/generoInfo"
+        android:layout_toEndOf="@+id/portadaInfo"
+        android:layout_below="@+id/añoInfo"
+        android:layout_alignLeft="@+id/añoInfo"
+        android:layout_alignStart="@+id/añoInfo"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="15dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Rating"
+        android:id="@+id/ratingInfo"
+        android:layout_toEndOf="@+id/portadaInfo"
+        android:layout_below="@+id/generoInfo"
+        android:layout_alignLeft="@+id/generoInfo"
+        android:layout_alignStart="@+id/generoInfo" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sinopsis"
+        android:id="@+id/plotInfo"
+        android:layout_below="@+id/portadaInfo"
+        android:layout_alignLeft="@+id/portadaInfo"
+        android:layout_alignStart="@+id/portadaInfo" />
+</RelativeLayout>

@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">Movie Adviser</string>
-    <string name="movies">UNA PELICULA</string>
+    <string name="movies">UNA PELÍCULA</string>
     <string name="series">UNA SERIE</string>
     <string name="seen">VISTAS</string>
 

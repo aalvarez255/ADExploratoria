@@ -222,6 +222,10 @@ public class RESTRequest extends AsyncTask<Void,Integer,Void> {
             editor.putString("tipo",tipo);
             editor.putString("año",año);
             editor.putString("portada",urlSmall);
+            editor.putString("portadaBig",urlBig);
+            editor.putString("rating",rating);
+            editor.putString("plot",plot);
+
 
             editor.commit();
         }
