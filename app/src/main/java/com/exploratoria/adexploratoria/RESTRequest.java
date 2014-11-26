@@ -57,6 +57,9 @@ public class RESTRequest extends AsyncTask<Void,Integer,Void> {
     String año = "";
     String idm = "";
     String urlSmall = "";
+    String urlBig = "";
+    String plot = "";
+    String genero = "";
 
     boolean errorNet = false;
     boolean errorServ = false;
@@ -169,14 +172,17 @@ public class RESTRequest extends AsyncTask<Void,Integer,Void> {
             titulo = res.getString("name");
             año = res.getString("year");
             rating = res.getString("rating");
+            plot = res.getString("plot");
+            genero = res.getString("maingenre");
+
             double rat = Double.parseDouble(rating);
             rat = Math.round( rat * 100.0 ) / 100.0;
             rating = String.valueOf(rat);
             JSONObject portada = res.getJSONObject("poster");
-            String url = portada.getString("large");
+            urlBig = portada.getString("large");
             urlSmall = portada.getString("medium");
 
-            URL imageUrl = new URL(url);
+            URL imageUrl = new URL(urlBig);
             HttpURLConnection connection = (HttpURLConnection) imageUrl.openConnection();
             connection.setDoInput(true);
             connection.connect();

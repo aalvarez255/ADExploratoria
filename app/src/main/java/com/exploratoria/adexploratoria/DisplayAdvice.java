@@ -46,6 +46,13 @@ public class DisplayAdvice extends SeenList {
 
     Activity activity;
 
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.finish();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -147,6 +154,11 @@ public class DisplayAdvice extends SeenList {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void gotoInfo(View v) {
+        Intent intent = new Intent(this, DisplayInfo.class);
+        startActivity(intent);
     }
 
 
