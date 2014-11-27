@@ -25,6 +25,7 @@
         android:layout_width="150dp"
         android:layout_height="223dp"
         android:id="@+id/portadaInfo"
+        android:background="@drawable/stroke_image"
         android:layout_below="@+id/tituloInfo"
         android:layout_alignLeft="@+id/tituloInfo"
         android:layout_alignStart="@+id/tituloInfo" />
@@ -33,72 +34,127 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Tipo"
-        android:id="@+id/tipoInfo"
+        android:id="@+id/tipoLabel"
+        android:textSize="18sp"
+        android:textColor="@color/teal_A100"
         android:layout_toEndOf="@+id/portadaInfo"
-        android:layout_alignTop="@+id/portadaInfo"
         android:layout_toRightOf="@+id/portadaInfo"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginBottom="5dp"
-        android:textSize="18sp" />
+        android:layout_alignTop="@+id/portadaInfo"
+        android:layout_marginLeft="15dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Año"
+        android:id="@+id/añoLabel"
+        android:textSize="18sp"
+        android:textColor="@color/teal_A100"
+        android:layout_below="@+id/tipoLabel"
+        android:layout_alignLeft="@+id/tipoLabel"
+        android:layout_alignStart="@+id/tipoLabel"
+        android:layout_marginTop="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Género"
+        android:id="@+id/generoLabel"
+        android:textSize="18sp"
+        android:textColor="@color/teal_A100"
+        android:layout_below="@+id/añoLabel"
+        android:layout_alignLeft="@+id/añoLabel"
+        android:layout_alignStart="@+id/añoLabel"
+        android:layout_marginTop="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nota"
+        android:id="@+id/ratingLabel"
+        android:textSize="18sp"
+        android:textColor="@color/teal_A100"
+        android:layout_below="@+id/generoLabel"
+        android:layout_alignLeft="@+id/generoLabel"
+        android:layout_alignStart="@+id/generoLabel"
+        android:layout_marginTop="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sinopsis"
+        android:id="@+id/plotLabel"
+        android:layout_below="@+id/portadaInfo"
+        android:layout_alignLeft="@+id/portadaInfo"
+        android:textSize="18sp"
+        android:layout_marginTop="15dp"
+        android:textColor="@color/teal_A100" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tipo"
+        android:id="@+id/tipoInfo"
+        android:textSize="18sp"
+        android:layout_alignLeft="@+id/añoInfo"
+        android:layout_alignStart="@+id/añoInfo"
+        android:layout_alignBottom="@+id/tipoLabel" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Año"
         android:id="@+id/añoInfo"
-        android:layout_toEndOf="@+id/portadaInfo"
-        android:layout_below="@+id/tipoInfo"
-        android:layout_marginRight="15dp"
-        android:layout_marginBottom="5dp"
-        android:layout_toRightOf="@+id/portadaInfo"
-        android:layout_marginLeft="20dp"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:layout_alignLeft="@+id/generoInfo"
+        android:layout_alignStart="@+id/generoInfo"
+        android:layout_alignBottom="@+id/añoLabel" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Género"
         android:id="@+id/generoInfo"
-        android:layout_toEndOf="@+id/portadaInfo"
-        android:layout_below="@+id/añoInfo"
-        android:layout_alignLeft="@+id/añoInfo"
-        android:layout_alignStart="@+id/añoInfo"
-        android:layout_marginBottom="5dp"
-        android:layout_marginRight="15dp"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:layout_toEndOf="@+id/generoLabel"
+        android:layout_marginLeft="20dp"
+        android:layout_alignBaseline="@+id/generoLabel"
+        android:layout_alignBottom="@+id/generoLabel"
+        android:layout_toRightOf="@+id/generoLabel" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Rating"
         android:id="@+id/ratingInfo"
-        android:layout_toEndOf="@+id/portadaInfo"
-        android:layout_below="@+id/generoInfo"
-        android:layout_alignLeft="@+id/generoInfo"
-        android:layout_alignStart="@+id/generoInfo"
         android:textSize="18sp"
-        android:layout_marginRight="5dp" />
+        android:layout_alignBaseline="@+id/ratingLabel"
+        android:layout_alignBottom="@+id/ratingLabel"
+        android:layout_alignLeft="@+id/generoInfo"
+        android:layout_alignStart="@+id/generoInfo" />
+
+    <ImageView
+        android:layout_width="19dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView3"
+        android:layout_alignBottom="@+id/ratingInfo"
+        android:layout_toRightOf="@+id/ratingInfo"
+        android:layout_alignTop="@+id/ratingInfo"
+        android:src="@drawable/white_star"
+        android:layout_marginLeft="5dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sinopsis"
         android:id="@+id/plotInfo"
-        android:layout_below="@+id/portadaInfo"
-        android:layout_alignLeft="@+id/portadaInfo"
-        android:layout_alignStart="@+id/portadaInfo"
-        android:layout_marginTop="20dp"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:lineSpacingExtra="5dp"
+        android:layout_toEndOf="@+id/plotInfo"
+        android:layout_alignLeft="@+id/plotLabel"
+        android:layout_below="@+id/plotLabel"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="15dp"
+        android:autoText="false" />
 
-    <ImageView
-        android:layout_width="18dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView3"
-        android:layout_alignBottom="@+id/ratingInfo"
-        android:layout_toRightOf="@+id/ratingInfo"
-        android:layout_toEndOf="@+id/ratingInfo"
-        android:src="@drawable/white_star"
-        android:layout_alignTop="@+id/ratingInfo" />
 </RelativeLayout>
 </ScrollView>
