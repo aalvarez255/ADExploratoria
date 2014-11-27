@@ -6,7 +6,7 @@
     <TextView
         android:text="VISTAS"
         android:layout_width="240dp"
-        android:layout_height="75dp"
+        android:layout_height="60dp"
         android:id="@+id/backgrd"
         android:background="@color/teal_600"
         android:gravity="center"
