@@ -59,6 +59,8 @@ public class RESTRequest extends AsyncTask<Void,Integer,Void> {
 
     IntentsOpenHelpers sql;
 
+    SharedPreferences preferences;
+
     public RESTRequest (Activity context, String tipo, Menu optionsMenu) {
         this.context = context;
         this.tipo = tipo;
@@ -68,9 +70,7 @@ public class RESTRequest extends AsyncTask<Void,Integer,Void> {
     @Override
     protected Void doInBackground(Void... params) {
         JSONObject res;
-        JSONObject res2;
         try {
-
             HttpGet request = new HttpGet("http://api.series.ly/v2/auth_token?id_api=3074&secret=x6u6xTFr6h3CyVebSVcu");
             HttpParams httpParameters = new BasicHttpParams();
             int timeoutConnection = 3000;
@@ -83,13 +83,13 @@ public class RESTRequest extends AsyncTask<Void,Integer,Void> {
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
             StringBuilder builder = new StringBuilder();
-            for(String line; (line = reader.readLine()) != null;) {
+            for (String line; (line = reader.readLine()) != null; ) {
                 builder.append(line).append("\n");
             }
             JSONTokener tokener = new JSONTokener(builder.toString());
             JSONObject json = new JSONObject(tokener);
 
-            String auth_token  = json.getString("auth_token");
+            String auth_token = json.getString("auth_token");
 
             Random random = new Random();
             int num_pag = 2;
@@ -98,16 +98,15 @@ public class RESTRequest extends AsyncTask<Void,Integer,Void> {
             if (tipo.equals("movies")) {
                 tipo = "Película";
                 request = new HttpGet("http://api.series.ly/v2/media/browse?auth_token=" + auth_token + "&mediaType=2&limit=48&page=" + Integer.toString(page));
-            }
-            else {
+            } else {
                 tipo = "Serie";
-                request = new HttpGet("http://api.series.ly/v2/media/browse?auth_token="+auth_token+"&mediaType=1&limit=48&page="+Integer.toString(page));
+                request = new HttpGet("http://api.series.ly/v2/media/browse?auth_token=" + auth_token + "&mediaType=1&limit=48&page=" + Integer.toString(page));
             }
             response = httpClient.execute(request);
 
             reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
             builder = new StringBuilder();
-            for(String line; (line = reader.readLine()) != null;) {
+            for (String line; (line = reader.readLine()) != null; ) {
                 builder.append(line).append("\n");
             }
             tokener = new JSONTokener(builder.toString());
@@ -121,37 +120,19 @@ public class RESTRequest extends AsyncTask<Void,Integer,Void> {
             sql = new IntentsOpenHelpers(context);
             SQLiteDatabase db = sql.getWritableDatabase();
             String consult = "SELECT idm FROM vistas";
-            Cursor cursor = db.rawQuery(consult,null);
+            Cursor cursor = db.rawQuery(consult, null);
             while (cursor.moveToNext()) {
                 idm_vistas.add(cursor.getString(0));
             }
             cursor.close();
             db.close();
 
-            if (idm_vistas.size() == (num_pag*48)) {
+            if (idm_vistas.size() == (num_pag * 48)) {
                 num_pag_min += (num_pag - num_pag_min) + 1;
                 num_pag += (num_pag - num_pag_min) + 1;
             }
 
             idm = res.getString("idm");
-
-            /* INICIO PEDIR FULL_INFO */
-            if (tipo.equals("Película")) {
-                request = new HttpGet("http://api.series.ly/v2/media/full_info?auth_token="+auth_token+"&idm="+idm+"&mediaType=2");
-            }
-            else {
-                request = new HttpGet("http://api.series.ly/v2/media/full_info?auth_token="+auth_token+"&idm="+idm+"&mediaType=1");
-            }
-            response = httpClient.execute(request);
-
-            reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
-            builder = new StringBuilder();
-            for(String line; (line = reader.readLine()) != null;) {
-                builder.append(line).append("\n");
-            }
-            tokener = new JSONTokener(builder.toString());
-            res2 = new JSONObject(tokener);
-            /* FIN PEDIR FULL_INFO */
 
             while (idm_vistas.contains(idm)) {
                 random = new Random();
@@ -159,16 +140,15 @@ public class RESTRequest extends AsyncTask<Void,Integer,Void> {
                 if (tipo.equals("movies")) {
                     tipo = "Película";
                     request = new HttpGet("http://api.series.ly/v2/media/browse?auth_token=" + auth_token + "&mediaType=2&limit=48&page=" + Integer.toString(page));
-                }
-                else {
+                } else {
                     tipo = "Serie";
-                    request = new HttpGet("http://api.series.ly/v2/media/browse?auth_token="+auth_token+"&mediaType=1&limit=48&page="+Integer.toString(page));
+                    request = new HttpGet("http://api.series.ly/v2/media/browse?auth_token=" + auth_token + "&mediaType=1&limit=48&page=" + Integer.toString(page));
                 }
                 response = httpClient.execute(request);
 
                 reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
                 builder = new StringBuilder();
-                for(String line; (line = reader.readLine()) != null;) {
+                for (String line; (line = reader.readLine()) != null; ) {
                     builder.append(line).append("\n");
                 }
                 tokener = new JSONTokener(builder.toString());
@@ -178,33 +158,16 @@ public class RESTRequest extends AsyncTask<Void,Integer,Void> {
                 peli = random.nextInt((47 - 0) + 1) + 0;  //[0,47]
                 res = movies.getJSONObject(peli);
                 idm = res.getString("idm");
-                /* INICIO PEDIR FULL_INFO */
-                if (tipo.equals("Película")) {
-                    request = new HttpGet("http://api.series.ly/v2/media/full_info?auth_token="+auth_token+"&idm="+idm+"&mediaType=2");
-                }
-                else {
-                    request = new HttpGet("http://api.series.ly/v2/media/full_info?auth_token="+auth_token+"&idm="+idm+"&mediaType=1");
-                }
-                response = httpClient.execute(request);
-
-                reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
-                builder = new StringBuilder();
-                for(String line; (line = reader.readLine()) != null;) {
-                    builder.append(line).append("\n");
-                }
-                tokener = new JSONTokener(builder.toString());
-                res2 = new JSONObject(tokener);
-                /* FIN PEDIR FULL_INFO */
             }
 
-            titulo = res2.optString("name");
-            año = res2.optString("year");
-            rating = res2.optString("rating");
-            plot = res2.optString("plot");
-            genero = res2.optString("maingenre");
+            titulo = res.optString("name");
+            año = res.optString("year");
+            rating = res.optString("rating");
+            plot = res.optString("plot");
+            genero = res.optString("maingenre");
 
             double rat = Double.parseDouble(rating);
-            rat = Math.round( rat * 100.0 ) / 100.0;
+            rat = Math.round(rat * 100.0) / 100.0;
             rating = String.valueOf(rat);
             JSONObject portada = res.getJSONObject("poster");
             urlBig = portada.getString("large");
@@ -217,10 +180,7 @@ public class RESTRequest extends AsyncTask<Void,Integer,Void> {
             InputStream inputStream = connection.getInputStream();
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inScaled = false;
-            bitmap = BitmapFactory.decodeStream(inputStream,null,options);
-
-
-
+            bitmap = BitmapFactory.decodeStream(inputStream, null, options);
         }catch(Exception e) {
             e.printStackTrace();
             errorServ = true;
@@ -243,26 +203,26 @@ public class RESTRequest extends AsyncTask<Void,Integer,Void> {
             MovieTitulo.setText(titulo);
             MovieRating.setText(rating);
 
-            SharedPreferences preferences =  context.getSharedPreferences("Context", context.MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
-            editor.putString("idm",idm);
-            editor.putString("titulo",titulo);
-            editor.putString("tipo",tipo);
-            editor.putString("año",año);
-            editor.putString("portada",urlSmall);
-            editor.putString("portadaBig",urlBig);
-            editor.putString("rating",rating);
-            editor.putString("plot",plot);
-            editor.putString("genero",genero);
+            editor.putString("idm", idm);
+            editor.putString("titulo", titulo);
+            editor.putString("tipo", tipo);
+            editor.putString("año", año);
+            editor.putString("portada", urlSmall);
+            editor.putString("portadaBig", urlBig);
+            editor.putString("rating", rating);
+            editor.putString("plot", plot);
+            editor.putString("genero", genero);
 
 
             editor.commit();
+
         }
         else if (!errorNet && errorServ){
             AlertDialog.Builder builder1 = new AlertDialog.Builder(context)
                     .setCancelable(false)
                     .setTitle("Error")
-                    .setMessage("Error interno del servidor. Vuelva a intentarlo más adelante.")
+                    .setMessage("No se pudo establecer conexión con el servidor. Vuelva a intentarlo más adelante.")
                     .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
@@ -281,6 +241,9 @@ public class RESTRequest extends AsyncTask<Void,Integer,Void> {
     protected void onPreExecute() {
         super.onPreExecute();
         setRefreshActionButtonState(true);
+
+        preferences =  context.getSharedPreferences("Context", context.MODE_PRIVATE);
+
 
         progressDialog = ProgressDialog.show(context,"Cargando","Descargando información..",true,false);
         ConnectivityManager connectivityManager

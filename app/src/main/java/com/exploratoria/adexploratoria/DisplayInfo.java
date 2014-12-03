@@ -14,12 +14,23 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 import org.w3c.dom.Text;
 
+import java.io.BufferedReader;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.ProtectionDomain;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by adrian on 26/11/14.
@@ -56,6 +67,12 @@ public class DisplayInfo extends SeenList {
         mDrawerToggle.syncState();
 
         preferences = getApplicationContext().getSharedPreferences("Context", MODE_PRIVATE);
+        try {
+            boolean b = new getFullPlot().execute().get();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
 
         TextView titulo = (TextView) findViewById(R.id.tituloInfo);
         TextView año = (TextView) findViewById(R.id.añoInfo);
@@ -105,5 +122,60 @@ public class DisplayInfo extends SeenList {
             return bitmap;
         }
 
+    }
+
+    private class getFullPlot extends AsyncTask<Void,Void,Boolean> {
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            try {
+                HttpGet request = new HttpGet("http://api.series.ly/v2/auth_token?id_api=3074&secret=x6u6xTFr6h3CyVebSVcu");
+                HttpParams httpParameters = new BasicHttpParams();
+                int timeoutConnection = 3000;
+                HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
+                int timeoutSocket = 5000;
+                HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
+
+                DefaultHttpClient httpClient = new DefaultHttpClient(httpParameters);
+                HttpResponse response = httpClient.execute(request);
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
+                StringBuilder builder = new StringBuilder();
+                for (String line; (line = reader.readLine()) != null; ) {
+                    builder.append(line).append("\n");
+                }
+                JSONTokener tokener = new JSONTokener(builder.toString());
+                JSONObject json = new JSONObject(tokener);
+
+                String auth_token = json.getString("auth_token");
+
+                String idm = preferences.getString("idm","");
+                String tipo = preferences.getString("tipo","");
+                if (tipo.equals("Película")) {
+                    request = new HttpGet("http://api.series.ly/v2/media/full_info?auth_token=" + auth_token + "&idm=" + idm + "&mediaType=2");
+                } else {
+                    request = new HttpGet("http://api.series.ly/v2/media/full_info?auth_token=" + auth_token + "&idm=" + idm + "&mediaType=1");
+                }
+                response = httpClient.execute(request);
+
+                reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
+                builder = new StringBuilder();
+                for (String line; (line = reader.readLine()) != null; ) {
+                    builder.append(line).append("\n");
+                }
+                tokener = new JSONTokener(builder.toString());
+                JSONObject res = new JSONObject(tokener);
+
+                String plot = res.optString("plot_es");
+                if (plot.equals("")) plot = res.optString("plot");
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString("plot",plot);
+                editor.commit();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+            return true;
+        }
     }
 }
