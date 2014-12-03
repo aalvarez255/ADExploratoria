@@ -98,7 +98,8 @@
         android:layout_alignParentStart="false"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/TextTitulo"
-        android:layout_alignBottom="@+id/card_view"
-        android:layout_marginBottom="120dp" />
+        android:baselineAlignBottom="false"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="150dp" />
 
 </RelativeLayout>

@@ -147,7 +147,7 @@ public class DisplayAdvice extends SeenList {
             case R.id.markseen:
                 try {
                     Boolean bool = new StoreMovieDB().execute().get();
-                    if(bool) updateDrawer();
+                    if (bool) updateDrawer();
                 }catch (Exception e) {
                     e.printStackTrace();
                 }
