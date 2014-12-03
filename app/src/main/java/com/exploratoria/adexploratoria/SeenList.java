@@ -72,9 +72,8 @@ public class SeenList extends ActionBarActivity {
     }
 
     public void updateDrawer() {
-        Log.v("VIST", "entra");
-        NavItems = new ArrayList<ItemDrawer>();
 
+        NavItems.clear();
         sql = new IntentsOpenHelpers(getApplicationContext());
         SQLiteDatabase db = sql.getWritableDatabase();
         String consult = "SELECT * FROM vistas";
@@ -90,9 +89,9 @@ public class SeenList extends ActionBarActivity {
 
             NavItems.add(new ItemDrawer(titulo,año,tipo,bitmap));
         }
+
         cursor.close();
         sql.close();
-        NavAdapter = new NavigationAdapter(this,NavItems);
-        NavList.setAdapter(NavAdapter);
+        NavAdapter.notifyDataSetChanged();
     }
 }

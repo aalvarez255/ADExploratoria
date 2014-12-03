@@ -50,24 +50,26 @@ public class NavigationAdapter extends BaseAdapter {
 
     public View getView(int position, View convertView, ViewGroup parent) {
         Fila view;
-        LayoutInflater inflater = activity.getLayoutInflater();
+
+        ItemDrawer item = arrayItems.get(position);
         if(convertView == null) {
-            view = new Fila();
-            ItemDrawer item = arrayItems.get(position);
+            LayoutInflater inflater = activity.getLayoutInflater();
             convertView = inflater.inflate(R.layout.drawer_item, null);
+            view = new Fila();
             view.titulo = (TextView) convertView.findViewById(R.id.title_item);
-            view.titulo.setText(item.getTitulo());
             view.portada = (ImageView) convertView.findViewById(R.id.portada);
-            view.portada.setImageBitmap(item.getPortada());
             view.año = (TextView) convertView.findViewById(R.id.year_item);
-            view.año.setText(String.valueOf(item.getYear()));
             view.tipo = (TextView) convertView.findViewById(R.id.type_item);
-            view.tipo.setText(item.getTipo());
             convertView.setTag(view);
         }
         else {
             view = (Fila) convertView.getTag();
         }
+        view.titulo.setText(item.getTitulo());
+        view.portada.setImageBitmap(item.getPortada());
+        view.año.setText(String.valueOf(item.getYear()));
+        view.tipo.setText(item.getTipo());
+
         return convertView;
     }
 }

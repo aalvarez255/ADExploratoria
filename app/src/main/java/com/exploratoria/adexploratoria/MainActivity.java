@@ -80,4 +80,5 @@ public class MainActivity extends SeenList {
 
         return super.onOptionsItemSelected(item);
     }
+
 }
