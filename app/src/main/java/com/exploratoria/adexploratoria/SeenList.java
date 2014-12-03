@@ -1,6 +1,7 @@
 package com.exploratoria.adexploratoria;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.database.Cursor;
@@ -34,6 +35,10 @@ public class SeenList extends ActionBarActivity {
 
     IntentsOpenHelpers sql;
 
+    SharedPreferences preferences;
+
+    Activity context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,16 +64,35 @@ public class SeenList extends ActionBarActivity {
             String tipo = cursor.getString(3);
             int año = cursor.getInt(4);
             byte[] portadaByte = cursor.getBlob(5);
+            String idm = cursor.getString(1);
 
             Bitmap bitmap = BitmapFactory.decodeByteArray(portadaByte , 0, portadaByte.length);
 
-            NavItems.add(new ItemDrawer(titulo,año,tipo,bitmap));
+            NavItems.add(new ItemDrawer(titulo,año,tipo,bitmap, idm));
         }
         cursor.close();
         sql.close();
 
         NavAdapter = new NavigationAdapter(this,NavItems);
         NavList.setAdapter(NavAdapter);
+
+        NavList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView adapterView, View view, int position, long id) {
+                Log.v("entra", "entra");
+                ItemDrawer item = (ItemDrawer) adapterView.getItemAtPosition(position);
+                String idm = item.getIdm();
+                String tipo = item.getTipo();
+                preferences =  context.getSharedPreferences("Context", context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString("idm", idm);
+                editor.putString("tipo", tipo);
+                editor.commit();
+                Intent intent = new Intent(context, DisplayInfo.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     public void updateDrawer() {
@@ -84,14 +108,19 @@ public class SeenList extends ActionBarActivity {
             String tipo = cursor.getString(3);
             int año = cursor.getInt(4);
             byte[] portadaByte = cursor.getBlob(5);
+            String idm = cursor.getString(1);
 
             Bitmap bitmap = BitmapFactory.decodeByteArray(portadaByte , 0, portadaByte.length);
 
-            NavItems.add(new ItemDrawer(titulo,año,tipo,bitmap));
+            NavItems.add(new ItemDrawer(titulo,año,tipo,bitmap, idm));
         }
 
         cursor.close();
         sql.close();
         NavAdapter.notifyDataSetChanged();
     }
+
+
+
+
 }

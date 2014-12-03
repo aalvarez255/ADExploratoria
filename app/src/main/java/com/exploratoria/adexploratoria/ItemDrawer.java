@@ -10,12 +10,14 @@ public class ItemDrawer {
     private int year;
     private String tipo;
     private Bitmap portada;
+    private String idm;
 
-    public ItemDrawer(String titulo, int year, String tipo, Bitmap portada) {
+    public ItemDrawer(String titulo, int year, String tipo, Bitmap portada, String idm) {
         this.titulo = titulo;
         this.year = year;
         this.tipo = tipo;
         this.portada = portada;
+        this.idm = idm;
     }
 
     public String getTitulo() {
@@ -32,6 +34,14 @@ public class ItemDrawer {
 
     public void setYear(int year) {
         this.year = year;
+    }
+
+    public String getIdm() {
+        return idm;
+    }
+
+    public void setIdm(String idm) {
+        this.idm = idm;
     }
 
     public String getTipo() {

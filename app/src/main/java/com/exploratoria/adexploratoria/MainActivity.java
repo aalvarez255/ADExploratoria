@@ -42,6 +42,12 @@ public class MainActivity extends SeenList {
         preferences = getApplicationContext().getSharedPreferences("Context", MODE_PRIVATE);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateDrawer();
+    }
+
     public void gotoMovies(View v) {
         SharedPreferences.Editor edit = preferences.edit();
         edit.putString("goto","movies");

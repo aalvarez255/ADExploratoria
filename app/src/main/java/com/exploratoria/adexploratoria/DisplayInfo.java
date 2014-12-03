@@ -170,6 +170,7 @@ public class DisplayInfo extends SeenList {
                 if (plot.equals("")) plot = res.optString("plot");
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putString("plot",plot);
+                /* AQUI TENGO Q PONER EL RESTO DE COSITAS */
                 editor.commit();
             } catch (Exception e) {
                 e.printStackTrace();
