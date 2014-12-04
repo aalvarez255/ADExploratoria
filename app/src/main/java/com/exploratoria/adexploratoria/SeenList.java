@@ -50,6 +50,8 @@ public class SeenList extends ActionBarActivity implements AdapterView.OnItemCli
             setSupportActionBar(toolbar);
         }
 
+        context = this;
+
         NavDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         NavList = (ListView) findViewById(R.id.left_drawer);
 
@@ -98,6 +100,7 @@ public class SeenList extends ActionBarActivity implements AdapterView.OnItemCli
     @Override
     public void onItemClick(AdapterView adapterView, View view, int position, long id) {
         Log.v("entra", "entra");
+        NavDrawerLayout.closeDrawers();
         ItemDrawer item = (ItemDrawer) adapterView.getItemAtPosition(position);
         String idm = item.getIdm();
         String tipo = item.getTipo();
@@ -108,7 +111,7 @@ public class SeenList extends ActionBarActivity implements AdapterView.OnItemCli
         editor.commit();
         Intent intent = new Intent(context, DisplayInfo.class);
         startActivity(intent);
-        NavDrawerLayout.closeDrawers();
+
     }
 
     public void updateDrawer() {
