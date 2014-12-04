@@ -17,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -78,12 +79,26 @@ public class SeenList extends ActionBarActivity implements AdapterView.OnItemCli
 
         NavList.setOnItemClickListener(this);
 
+        NavList.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                if (scrollState == SCROLL_STATE_IDLE) {
+                    NavList.bringToFront();
+                    NavDrawerLayout.requestLayout();
+                }
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+            }
+        });
+
     }
 
     @Override
     public void onItemClick(AdapterView adapterView, View view, int position, long id) {
         Log.v("entra", "entra");
-        /*ItemDrawer item = (ItemDrawer) adapterView.getItemAtPosition(position);
+        ItemDrawer item = (ItemDrawer) adapterView.getItemAtPosition(position);
         String idm = item.getIdm();
         String tipo = item.getTipo();
         preferences =  context.getSharedPreferences("Context", context.MODE_PRIVATE);
@@ -92,7 +107,7 @@ public class SeenList extends ActionBarActivity implements AdapterView.OnItemCli
         editor.putString("tipo", tipo);
         editor.commit();
         Intent intent = new Intent(context, DisplayInfo.class);
-        startActivity(intent);*/
+        startActivity(intent);
         NavDrawerLayout.closeDrawers();
     }
 
