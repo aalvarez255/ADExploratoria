@@ -45,7 +45,7 @@ public class MainActivity extends SeenList {
     @Override
     protected void onResume() {
         super.onResume();
-        updateDrawer();
+        //updateDrawer();
     }
 
     public void gotoMovies(View v) {

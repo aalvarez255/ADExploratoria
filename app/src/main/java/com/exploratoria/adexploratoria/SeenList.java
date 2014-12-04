@@ -25,7 +25,7 @@ import android.widget.Toast;
 import java.sql.Blob;
 import java.util.ArrayList;
 
-public class SeenList extends ActionBarActivity {
+public class SeenList extends ActionBarActivity implements AdapterView.OnItemClickListener {
 
     protected DrawerLayout NavDrawerLayout;
     private ListView NavList;
@@ -73,26 +73,27 @@ public class SeenList extends ActionBarActivity {
         cursor.close();
         sql.close();
 
-        NavAdapter = new NavigationAdapter(this,NavItems);
+        NavAdapter = new NavigationAdapter(this, NavItems);
         NavList.setAdapter(NavAdapter);
 
-        NavList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView adapterView, View view, int position, long id) {
-                Log.v("entra", "entra");
-                ItemDrawer item = (ItemDrawer) adapterView.getItemAtPosition(position);
-                String idm = item.getIdm();
-                String tipo = item.getTipo();
-                preferences =  context.getSharedPreferences("Context", context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.putString("idm", idm);
-                editor.putString("tipo", tipo);
-                editor.commit();
-                Intent intent = new Intent(context, DisplayInfo.class);
-                startActivity(intent);
-            }
-        });
+        NavList.setOnItemClickListener(this);
 
+    }
+
+    @Override
+    public void onItemClick(AdapterView adapterView, View view, int position, long id) {
+        Log.v("entra", "entra");
+        /*ItemDrawer item = (ItemDrawer) adapterView.getItemAtPosition(position);
+        String idm = item.getIdm();
+        String tipo = item.getTipo();
+        preferences =  context.getSharedPreferences("Context", context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("idm", idm);
+        editor.putString("tipo", tipo);
+        editor.commit();
+        Intent intent = new Intent(context, DisplayInfo.class);
+        startActivity(intent);*/
+        NavDrawerLayout.closeDrawers();
     }
 
     public void updateDrawer() {

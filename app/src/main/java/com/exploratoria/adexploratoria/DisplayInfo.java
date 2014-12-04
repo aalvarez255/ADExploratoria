@@ -168,9 +168,22 @@ public class DisplayInfo extends SeenList {
 
                 String plot = res.optString("plot_es");
                 if (plot.equals("")) plot = res.optString("plot");
+                String titulo = res.optString("name");
+                String año = res.optString("year");
+                String rating = res.optString("rating");
+                String genero = res.optString("maingenre");
+                JSONObject portada = res.getJSONObject("poster");
+                String urlBig = portada.getString("large");
+
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putString("plot",plot);
-                /* AQUI TENGO Q PONER EL RESTO DE COSITAS */
+                editor.putString("idm", idm);
+                editor.putString("titulo", titulo);
+                editor.putString("tipo", tipo);
+                editor.putString("año", año);
+                editor.putString("portadaBig", urlBig);
+                editor.putString("rating", rating);
+                editor.putString("genero", genero);
                 editor.commit();
             } catch (Exception e) {
                 e.printStackTrace();
