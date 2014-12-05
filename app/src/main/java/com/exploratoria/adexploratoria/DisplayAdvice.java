@@ -125,7 +125,7 @@ public class DisplayAdvice extends SeenList {
             case R.id.refresh:
                 // CODE REFRESCAR
                 if(context.equals("movies")) {
-                    titulo.setText("MOVIES");
+                    titulo.setText("PELÍCULAS");
                     try {
                         RESTRequest request = new RESTRequest(this,"movies",optionsMenu);
                         request.execute();
