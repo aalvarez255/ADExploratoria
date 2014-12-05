@@ -1,9 +1,14 @@
 package com.exploratoria.adexploratoria;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -42,6 +47,19 @@ import java.util.concurrent.ExecutionException;
 public class DisplayInfo extends SeenList {
 
     SharedPreferences preferences;
+    TextView titulo;
+    TextView año;
+    TextView tipo;
+    TextView rating;
+    TextView plot;
+    TextView genero;
+    ImageView portada;
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,67 +85,57 @@ public class DisplayInfo extends SeenList {
         mDrawerToggle.syncState();
 
         preferences = getApplicationContext().getSharedPreferences("Context", MODE_PRIVATE);
-        try {
-            boolean b = new getFullPlot().execute().get();
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
 
+        titulo = (TextView) findViewById(R.id.tituloInfo);
+        año = (TextView) findViewById(R.id.añoInfo);
+        tipo = (TextView) findViewById(R.id.tipoInfo);
+        rating = (TextView) findViewById(R.id.ratingInfo);
+        plot = (TextView) findViewById(R.id.plotInfo);
+        genero = (TextView) findViewById(R.id.generoInfo);
+        portada  = (ImageView) findViewById(R.id.portadaInfo);
 
-        TextView titulo = (TextView) findViewById(R.id.tituloInfo);
-        TextView año = (TextView) findViewById(R.id.añoInfo);
-        TextView tipo = (TextView) findViewById(R.id.tipoInfo);
-        TextView rating = (TextView) findViewById(R.id.ratingInfo);
-        TextView plot = (TextView) findViewById(R.id.plotInfo);
-        TextView genero = (TextView) findViewById(R.id.generoInfo);
-        ImageView portada  = (ImageView) findViewById(R.id.portadaInfo);
-
-        Bitmap image = null;
-        try {
-            String url = preferences.getString("portadaBig","");
-            image = new getPortadaUrl().execute(url).get();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        titulo.setText(preferences.getString("titulo",""));
-        tipo.setText(preferences.getString("tipo",""));
-        año.setText(preferences.getString("año",""));
-        rating.setText(preferences.getString("rating",""));
-        if (image != null) portada.setImageBitmap(image);
-        plot.setText(preferences.getString("plot",""));
-        genero.setText(preferences.getString("genero",""));
+        new getFullInfo().execute();
     }
 
-    private class getPortadaUrl extends AsyncTask<String,Void,Bitmap> {
+
+    private class getFullInfo extends AsyncTask<Void,Void,Void> {
+
+        ProgressDialog progressDialog;
+        Boolean errorNet = false;
+        Boolean errorServ = false;
+        Bitmap image;
 
         @Override
-        protected Bitmap doInBackground(String... params) {
-            Bitmap bitmap = null;
-            try {
-                String url = params[0];
-                URL imageUrl = new URL(url);
-                HttpURLConnection connection = (HttpURLConnection) imageUrl.openConnection();
-                connection.setDoInput(true);
-                connection.connect();
-                InputStream inputStream = connection.getInputStream();
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inScaled = false;
-                bitmap = BitmapFactory.decodeStream(inputStream,null,options);
-
-            }catch(Exception e) {
-                e.printStackTrace();
-                return null;
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = ProgressDialog.show(context, "Cargando", "Descargando información..", true, false);
+            ConnectivityManager connectivityManager
+                    = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+            if (activeNetworkInfo == null || !activeNetworkInfo.isConnected()) {
+                errorNet = true;
+                progressDialog.dismiss();
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(context)
+                        .setTitle("Error")
+                        .setCancelable(false)
+                        .setMessage("No hay conexión a Internet.")
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.cancel();
+                                cancel(true);
+                                context.finish();
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert);
+                AlertDialog alert = builder1.create();
+                alert.show();
             }
-            return bitmap;
         }
 
-    }
-
-    private class getFullPlot extends AsyncTask<Void,Void,Boolean> {
-
         @Override
-        protected Boolean doInBackground(Void... params) {
+        protected Void doInBackground(Void... params) {
+
             try {
                 HttpGet request = new HttpGet("http://api.series.ly/v2/auth_token?id_api=3074&secret=x6u6xTFr6h3CyVebSVcu");
                 HttpParams httpParameters = new BasicHttpParams();
@@ -175,21 +183,61 @@ public class DisplayInfo extends SeenList {
                 JSONObject portada = res.getJSONObject("poster");
                 String urlBig = portada.getString("large");
 
+                URL imageUrl = new URL(urlBig);
+                HttpURLConnection connection = (HttpURLConnection) imageUrl.openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                InputStream inputStream = connection.getInputStream();
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inScaled = false;
+                image = BitmapFactory.decodeStream(inputStream,null,options);
+
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putString("plot",plot);
                 editor.putString("idm", idm);
                 editor.putString("titulo", titulo);
                 editor.putString("tipo", tipo);
                 editor.putString("año", año);
-                editor.putString("portadaBig", urlBig);
                 editor.putString("rating", rating);
                 editor.putString("genero", genero);
                 editor.commit();
             } catch (Exception e) {
                 e.printStackTrace();
-                return false;
+                errorServ = true;
             }
-            return true;
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            progressDialog.dismiss();
+            if (!errorNet && errorServ){
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(context)
+                        .setCancelable(false)
+                        .setTitle("Error")
+                        .setMessage("No se pudo establecer conexión con el servidor. Vuelva a intentarlo más adelante.")
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.cancel();
+                                cancel(true);
+                                context.finish();
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert);
+                AlertDialog alert = builder1.create();
+                alert.show();
+            }
+            else if (!errorServ && !errorNet) {
+                titulo.setText(preferences.getString("titulo", ""));
+                tipo.setText(preferences.getString("tipo", ""));
+                año.setText(preferences.getString("año", ""));
+                rating.setText(preferences.getString("rating", ""));
+                portada.setImageBitmap(image);
+                plot.setText(preferences.getString("plot", ""));
+                genero.setText(preferences.getString("genero", ""));
+            }
         }
     }
 }

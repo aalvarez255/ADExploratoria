@@ -92,9 +92,9 @@ public class RESTRequest extends AsyncTask<Void,Integer,Void> {
             String auth_token = json.getString("auth_token");
 
             Random random = new Random();
-            int num_pag = 2;
+            int num_pag = 1;
             int num_pag_min = 0;
-            int page = random.nextInt((num_pag - num_pag_min) + 1) + num_pag_min;  //[0,2]
+            int page = random.nextInt((num_pag - num_pag_min) + 1) + num_pag_min;  //[0,1]
             if (tipo.equals("movies")) {
                 tipo = "Película";
                 request = new HttpGet("http://api.series.ly/v2/media/browse?auth_token=" + auth_token + "&mediaType=2&limit=48&page=" + Integer.toString(page));
@@ -209,7 +209,6 @@ public class RESTRequest extends AsyncTask<Void,Integer,Void> {
             editor.putString("tipo", tipo);
             editor.putString("año", año);
             editor.putString("portada", urlSmall);
-            editor.putString("portadaBig", urlBig);
             editor.putString("rating", rating);
             editor.putString("plot", plot);
             editor.putString("genero", genero);
