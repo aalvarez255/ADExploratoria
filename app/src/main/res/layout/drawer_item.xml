@@ -29,12 +29,15 @@
         android:layout_height="wrap_content"
         android:id="@+id/title_item"
         android:layout_toRightOf="@+id/portada"
-        android:textColor="#FAFAFA"
         android:gravity="center_vertical"
         android:text="Título"
+        android:textStyle="bold"
         android:padding="3dp"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="3dp" />
+        android:layout_marginTop="3dp"
+        android:layout_alignRight="@+id/type_item"
+        android:layout_alignEnd="@+id/type_item"
+        android:textSize="15sp" />
 
     <TextView
         android:clickable="false"
@@ -48,7 +51,7 @@
         android:layout_toEndOf="@+id/portada"
         android:layout_alignParentBottom="true"
         android:padding="3dp"
-        android:textSize="12sp"
+        android:textSize="14sp"
         android:gravity="bottom"
         android:layout_below="@+id/title_item"
         android:layout_marginBottom="3dp" />
@@ -64,7 +67,7 @@
         android:layout_alignParentBottom="true"
         android:layout_toRightOf="@+id/year_item"
         android:layout_toEndOf="@+id/year_item"
-        android:textSize="12sp"
+        android:textSize="14sp"
         android:padding="3dp"
         android:gravity="bottom|right"
         android:layout_alignParentRight="true"

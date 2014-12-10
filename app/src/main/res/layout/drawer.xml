@@ -7,10 +7,12 @@
 
 <android.support.v7.widget.Toolbar
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/colorPrimary"/>
+    android:background="#2196F3"
+    app:theme="@style/ToolBarStyle" />
 
 <android.support.v4.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -37,10 +39,9 @@
             android:layout_height="fill_parent"
             android:layout_gravity="start"
             android:choiceMode="singleChoice"
-            android:divider="#2E2E2E"
+            android:divider="#bebebe"
             android:dividerHeight="2dp"
-            android:background="#424242"
-            android:textColor="#424242"/>
+            android:background="#eeeeee"/>
 
     </LinearLayout>
 
