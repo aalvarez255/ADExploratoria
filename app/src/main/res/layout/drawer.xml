@@ -25,7 +25,7 @@
         android:layout_height="match_parent"/>
     <!-- The navigation drawer -->
     <LinearLayout
-        android:layout_width="240dp"
+        android:layout_width="280dp"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_gravity="start">
@@ -33,7 +33,7 @@
         <include layout="@layout/drawer_header"></include>
 
         <ListView android:id="@+id/left_drawer"
-            android:layout_width="240dp"
+            android:layout_width="280dp"
             android:layout_height="fill_parent"
             android:layout_gravity="start"
             android:choiceMode="singleChoice"
