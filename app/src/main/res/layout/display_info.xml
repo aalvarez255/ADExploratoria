@@ -36,11 +36,12 @@
         android:text="Tipo"
         android:id="@+id/tipoLabel"
         android:textSize="16sp"
-        android:textColor="@color/teal_A100"
+        android:textColor="@color/blue_A400"
         android:layout_toEndOf="@+id/portadaInfo"
         android:layout_toRightOf="@+id/portadaInfo"
         android:layout_alignTop="@+id/portadaInfo"
-        android:layout_marginLeft="15dp" />
+        android:layout_marginLeft="15dp"
+        android:textStyle="bold" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -48,11 +49,12 @@
         android:text="Año"
         android:id="@+id/añoLabel"
         android:textSize="16sp"
-        android:textColor="@color/teal_A100"
+        android:textColor="@color/blue_A400"
         android:layout_below="@+id/tipoLabel"
         android:layout_alignLeft="@+id/tipoLabel"
         android:layout_alignStart="@+id/tipoLabel"
-        android:layout_marginTop="5dp" />
+        android:layout_marginTop="5dp"
+        android:textStyle="bold" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -60,11 +62,12 @@
         android:text="Género"
         android:id="@+id/generoLabel"
         android:textSize="16sp"
-        android:textColor="@color/teal_A100"
+        android:textColor="@color/blue_A400"
         android:layout_below="@+id/añoLabel"
         android:layout_alignLeft="@+id/añoLabel"
         android:layout_alignStart="@+id/añoLabel"
-        android:layout_marginTop="5dp" />
+        android:layout_marginTop="5dp"
+        android:textStyle="bold" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -72,11 +75,12 @@
         android:text="Nota"
         android:id="@+id/ratingLabel"
         android:textSize="16sp"
-        android:textColor="@color/teal_A100"
+        android:textColor="@color/blue_A400"
         android:layout_below="@+id/generoLabel"
         android:layout_alignLeft="@+id/generoLabel"
         android:layout_alignStart="@+id/generoLabel"
-        android:layout_marginTop="5dp" />
+        android:layout_marginTop="5dp"
+        android:textStyle="bold" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -87,7 +91,8 @@
         android:layout_alignLeft="@+id/portadaInfo"
         android:textSize="18sp"
         android:layout_marginTop="15dp"
-        android:textColor="@color/teal_A100" />
+        android:textColor="@color/blue_A400"
+        android:textStyle="bold" />
 
     <TextView
         android:layout_width="wrap_content"

@@ -85,10 +85,10 @@
     <color name="blue_700">#455ede</color>
     <color name="blue_800">#3b50ce</color>
     <color name="blue_900">#2a36b1</color>
-    <color name="blue_A100">#a6baff</color>
-    <color name="blue_A200">#6889ff</color>
-    <color name="blue_A400">#4d73ff</color>
-    <color name="blue_A700">#4d69ff</color>
+    <color name="blue_A100">#82B1FF</color>
+    <color name="blue_A200">#448AFF</color>
+    <color name="blue_A400">#2979FF</color>
+    <color name="blue_A700">#2962FF</color>
 
     <color name="light_blue_50">#e1f5fe</color>
     <color name="light_blue_100">#b3e5fc</color>
